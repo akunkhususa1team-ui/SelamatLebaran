@@ -3,234 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Lebaran VIP Aili 🌙</title>
+    <title>Premium Lebaran VIP | Aili</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root{ 
-            --green:#1b5e20; 
-            --gold:#ffd700; 
-            --dark:#0a260a; 
-            --pink: #ff69b4; /* Menambahkan variabel pink yang hilang */
-            --card:rgba(255,255,255,.12); 
+        :root {
+            --primary: #c5a059; /* Gold Premium */
+            --bg-dark: #061a06;
+            --glass: rgba(255, 255, 255, 0.08);
+            --accent: #ffd700;
         }
-        *{margin:0;padding:0;box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
-        body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); font-family: 'Segoe UI', Roboto, sans-serif; height: 100vh; overflow: hidden; color: white; display: flex; flex-direction: column; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+
+        body {
+            background: radial-gradient(circle at center, #0d3b0d 0%, var(--bg-dark) 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        /* --- Intro Screen --- */
+        #intro-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease;
+        }
+
+        .enter-btn {
+            background: none;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 15px 40px;
+            font-size: 14px;
+            letter-spacing: 5px;
+            cursor: pointer;
+            transition: 0.4s;
+            font-weight: bold;
+        }
+
+        .enter-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
+
+        /* --- Main Card --- */
+        .card-container {
+            width: 90%;
+            max-width: 400px;
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 40px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            z-index: 10;
+            transition: 0.5s;
+        }
+
+        /* --- Photo Portrait Fix --- */
+        .photo-box {
+            width: 150px;
+            height: 150px; /* Base size */
+            margin: 0 auto 25px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid var(--primary);
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .photo-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Efek Portrait Saat Diklik */
+        .photo-box.active {
+            width: 220px;
+            height: 320px; /* Ukuran Portrait Asli */
+            transform: scale(1.05);
+        }
+
+        h2 { color: var(--accent); font-weight: 900; letter-spacing: -1px; margin-bottom: 10px; }
+        p { opacity: 0.8; font-size: 14px; line-height: 1.6; }
+
+        /* --- Buttons --- */
+        .btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 30px; }
+        .main-btn {
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yesBtn { background: var(--primary); color: #000; flex: 2; }
+        #noBtn { background: rgba(255,255,255,0.1); color: #fff; flex: 1; }
+
+        /* --- Ticket Section --- */
+        #ticket-ui { display: none; animation: fadeIn 1s forwards; }
         
-        /* Overlay untuk menutup foto saat dizoom */
-        #dismiss-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-            z-index: 105; display: none; backdrop-filter: blur(5px);
+        .vip-badge {
+            background: linear-gradient(45deg, #bf953f, #fcf6ba, #b38728);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            font-size: 24px;
         }
 
-        /* Overlay Awal */
-        #opening{ position:fixed; inset:0; background:rgba(0,0,0,0.95); display:grid; place-items:center; z-index:9999; cursor:pointer; transition: 0.8s; }
-        .fade-out{ opacity:0; pointer-events:none; }
-
-        .container{ flex:1; display:flex; align-items:center; justify-content:center; z-index:10; padding: 20px; position: relative; }
-        
-        /* Kartu Utama */
-        .card{ 
-            width:100%; max-width:380px; background:var(--card); backdrop-filter:blur(20px); 
-            border-radius:30px; padding:30px; text-align:center; 
-            border:1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; z-index: 50;
+        /* --- Animasi Claim THR Dewa --- */
+        .claim-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 20px 40px;
+            background: #e91e63;
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 900;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
         }
 
-        /* Photo Styles */
-        .photo-wrapper { width: 180px; height: 180px; margin: 0 auto; position: relative; z-index: 110; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-        .photo { width: 100%; height: 100%; border-radius: 20px; object-fit: cover; box-shadow: 0 0 25px var(--pink); cursor: pointer; }
-        
-        /* Efek Zoom Dewa */
-        .is-portrait { 
-            width: 280px !important; height: 380px !important; 
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+        .claim-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
+            transition: 0.5s;
+            animation: shimmer 2s infinite;
         }
 
-        /* CSS Sparkle */
-        .sparkle { position: fixed; pointer-events: none; z-index: 9999; font-size: 20px; animation: move-sparkle 1s ease-out forwards; }
-        @keyframes move-sparkle {
-            0% { transform: translate(0, 0) scale(1); opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
 
-        .info-box { margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: left; }
-        h2#question { font-size: 18px; font-weight: 400; margin: 20px 0; }
-
-        /* --- DESAIN TIKET VIP DEWA --- */
-        .ticket {
-            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-            border: 1px solid var(--gold); border-radius: 20px;
-            position: relative; padding: 25px; margin-top: 10px;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-            display: none; animation: slideUp 0.8s ease forwards;
-        }
-        @keyframes slideUp { from{opacity:0; transform: translateY(30px);} to{opacity:1; transform: translateY(0);} }
-        
-        .ticket::before, .ticket::after {
-            content: ''; position: absolute; width: 40px; height: 40px;
-            background: #0d2e0d; border-radius: 50%; top: 50%; transform: translateY(-50%);
-            border: 1px solid var(--gold);
-        }
-        .ticket::before { left: -25px; } .ticket::after { right: -25px; }
-
-        .ticket-header { border-bottom: 1px dashed rgba(255,215,0,0.4); padding-bottom: 15px; margin-bottom: 20px; }
-        .ticket-body { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left; }
-        .label { color: #777; font-size: 10px; letter-spacing: 1px; font-weight: bold; }
-        .value { color: var(--gold); font-size: 14px; font-weight: 800; margin-top: 2px; }
-
-        .dana-btn { 
-            display: block; background: linear-gradient(45deg, var(--gold), #ffecb3); 
-            color: #000; text-decoration: none; padding: 15px; border-radius: 12px; 
-            margin-top: 25px; font-weight: 900; text-align: center; 
-            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3); transition: 0.3s;
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(233, 30, 99, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(233, 30, 99, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(233, 30, 99, 0); }
         }
 
-        /* Sembunyikan Konten Saat Zoom */
-        .zoom-active #content-wrapper { opacity: 0; pointer-events: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .btn-container{ display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
-        button{ padding: 14px 28px; border-radius: 15px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
-        #yesBtn{ background: var(--gold); color: black; z-index: 100; position: relative; }
-        #noBtn{ background: rgba(255,255,255,0.1); color: white; position: relative; }
-
-        .running{ background: var(--green); padding: 15px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--gold); z-index: 100; position: relative; }
-        .running span{ display: inline-block; animation: scroll 20s linear infinite; color: var(--gold); font-weight: bold; font-size: 14px; }
-        @keyframes scroll{ from{ transform: translateX(100%); } to { transform: translateX(-100%); } }
-
-        .item{ position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.4; z-index: 1; }
-        @keyframes fall{ to { transform: translateY(110vh) rotate(360deg); } }
+        /* Decorative Elements */
+        .bg-ornament { position: fixed; opacity: 0.1; pointer-events: none; z-index: 1; }
     </style>
 </head>
-<body id="bodyArea">
+<body>
 
-<div id="dismiss-overlay"></div> <div id="opening">
-    <div style="text-align: center;">
-        <h2 style="color: var(--gold); font-size: 35px; letter-spacing: 5px; margin-bottom: 10px;">EID AL-FITR</h2>
-        <p style="font-size: 12px; letter-spacing: 2px; opacity: 0.7;">CLICK TO ENTER</p>
+<div id="intro-screen">
+    <h1 style="letter-spacing: 10px; margin-bottom: 20px; font-weight: 400;">EID AL-FITR</h1>
+    <button class="enter-btn" onclick="startApp()">START EXPERIENCE</button>
+</div>
+
+<div class="card-container" id="mainCard">
+    <div id="greeting-ui">
+        <div class="photo-box" id="myPhoto" onclick="togglePhoto()">
+            <img src="foto.jpg" alt="Aili">
+        </div>
+        <h2>Selamat Lebaran Aili</h2>
+        <p>Minal Aidin Wal Faizin, mohon maaf lahir dan batin.<br>Boleh aku mampir ke rumahmu hari ini?</p>
+        
+        <div class="btn-group">
+            <button class="main-btn" id="yesBtn" onclick="showTicket()">BOLEH BANGET! 🙏</button>
+            <button class="main-btn" id="noBtn" onmouseover="moveButton()">NGGAK 😜</button>
+        </div>
+    </div>
+
+    <div id="ticket-ui">
+        <p style="letter-spacing: 3px; font-size: 10px; margin-bottom: 5px;">EXCLUSIVE PASS</p>
+        <div class="vip-badge">VIP THR RECIPIENT</div>
+        <div style="border: 1px dashed var(--primary); margin: 20px 0; padding: 15px; border-radius: 10px; text-align: left;">
+            <p style="font-size: 11px;">NAME: <span style="color:var(--accent)">AILI</span></p>
+            <p style="font-size: 11px;">STATUS: <span style="color:var(--accent)">PRIORITY GUEST</span></p>
+            <p style="font-size: 11px;">DATE: <span style="color:var(--accent)">1 SYAWAL 1447H</span></p>
+        </div>
+        <p>Alhamdulillah! Sampai ketemu nanti ya! <br>Ini hadiah khusus buat kamu:</p>
+        <a href="https://link.dana.id/kaget/xxxxx" class="claim-btn">CLAIM THR SEKARANG 🧧</a>
     </div>
 </div>
 
-<div class="container" id="containerArea">
-    <div class="card" id="cardArea">
-        <h2 style="color: var(--gold); margin-bottom: 20px; font-size: 24px; letter-spacing: 1px;">Selamat Lebaran Aili ✨</h2>
-        
-        <div class="photo-wrapper" id="pWrapper">
-            <img src="foto.jpg" class="photo" id="mainPhoto" alt="Foto">
-        </div>
-        
-        <div id="content-wrapper">
-            <div id="awal">
-                <p style="font-size: 15px; opacity: 0.9; line-height: 1.6; margin-top: 15px;">Minal Aidin Wal Faizin,<br>mohon maaf lahir dan batin ya.</p>
-                <p style="margin: 25px 0 10px; font-weight: bold; color: var(--gold); font-size: 17px;">Boleh aku mampir? 🥺</p>
-                <div class="btn-container">
-                    <button id="yesBtn">BOLEH! 🙏</button>
-                    <button id="noBtn">NGGAK 😜</button>
-                </div>
-            </div>
-
-            <div id="akhir" class="ticket">
-                <div class="ticket-header">
-                    <p style="font-size: 18px; font-weight: 900; color: var(--gold); letter-spacing: 2px;">VIP THR PASS</p>
-                    <p style="font-size: 10px; color: #fff; margin-top: 5px;">EXCLUSIVE FOR AILI</p>
-                </div>
-                <div class="ticket-body">
-                    <div><p class="label">HOLDER</p><p class="value">AILI</p></div>
-                    <div style="text-align: right;"><p class="label">GATE</p><p class="value">HEAVEN A1</p></div>
-                    <div><p class="label">PRIORITY</p><p class="value">ULTRA VIP</p></div>
-                    <div style="text-align: right;"><p class="label">CODE</p><p class="value">EID-2026</p></div>
-                </div>
-                <div style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
-                    <p class="label">STATUS</p>
-                    <p class="value" style="font-size: 20px;">VERIFIED ✅</p>
-                </div>
-                <a href="https://link.dana.id/kaget/xxxxx" target="_blank" class="dana-btn">CLAIM YOUR THR 🧧</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="running">
-    <span>🌙 Minal Aidin Wal Faizin Aili! 🌙 Selamat Lebaran! 🌙 Ditunggu Opor Ayamnya ya! 🌙 Cek Tiket THR Kamu! 🌙</span>
-</div>
-
-<audio id="mainAudio" src="lebaran.mp3" loop></audio>
+<audio id="bgMusic" src="lebaran.mp3" loop></audio>
 
 <script>
-    const opening = document.getElementById('opening');
-    const audio = document.getElementById('mainAudio');
-    const pWrapper = document.getElementById('pWrapper');
-    const photo = document.getElementById('mainPhoto');
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const awal = document.getElementById('awal');
-    const akhir = document.getElementById('akhir');
-    const overlay = document.getElementById('dismiss-overlay');
+    const music = document.getElementById('bgMusic');
+    const photo = document.getElementById('myPhoto');
 
-    // Masuk & Putar Musik
-    opening.onclick = (e) => {
-        opening.classList.add('fade-out');
-        audio.play().catch(e => console.log("Audio play error"));
-    };
-
-    function createSparks(x, y, isFirework = false) {
-        const particles = ['✨', '⭐', '💖', '🌸'];
-        for (let i = 0; i < 12; i++) {
-            const s = document.createElement('div');
-            s.className = 'sparkle';
-            s.innerHTML = particles[Math.floor(Math.random() * particles.length)];
-            s.style.left = x + 'px'; 
-            s.style.top = y + 'px';
-            const angle = Math.random() * Math.PI * 2;
-            const dist = 100;
-            s.style.setProperty('--x', Math.cos(angle) * dist + 'px');
-            s.style.setProperty('--y', Math.sin(angle) * dist + 'px');
-            document.body.appendChild(s);
-            setTimeout(() => s.remove(), 1000);
-        }
+    function startApp() {
+        document.getElementById('intro-screen').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('intro-screen').style.display = 'none';
+        }, 1000);
+        music.play().catch(e => console.log("Music blocked or not found"));
     }
 
-    photo.onclick = (e) => {
-        e.stopPropagation();
-        const isZoomed = pWrapper.classList.toggle("is-portrait");
-        document.body.classList.toggle("zoom-active");
-        overlay.style.display = isZoomed ? "block" : "none";
-        createSparks(e.clientX, e.clientY);
-    };
-
-    overlay.onclick = () => {
-        pWrapper.classList.remove("is-portrait");
-        document.body.classList.remove("zoom-active");
-        overlay.style.display = "none";
-    };
-
-    // Tombol No Kabur
-    noBtn.onmouseover = () => {
-        noBtn.style.position = 'fixed';
-        noBtn.style.left = Math.random() * 80 + 'vw';
-        noBtn.style.top = Math.random() * 80 + 'vh';
-        noBtn.style.zIndex = '9999';
-    };
-
-    // Tombol Boleh
-    yesBtn.onclick = (e) => {
-        pWrapper.style.display = 'none'; 
-        awal.style.display = 'none';
-        akhir.style.display = 'block';
-    };
-
-    // Efek Animasi Melayang Terpadu
-    function createFallingIcon() {
-        const items = ['🌙','⭐','🧧','✨','🕌','🫔'];
-        const div = document.createElement('div');
-        div.className = 'item';
-        div.innerHTML = items[Math.floor(Math.random()*items.length)];
-        div.style.left = Math.random() * 100 + 'vw';
-        div.style.fontSize = Math.random() * 20 + 15 + 'px';
-        div.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        document.body.appendChild(div);
-        setTimeout(() => div.remove(), 5000);
+    // Fungsi Foto Portrait (Ukuran Asli)
+    function togglePhoto() {
+        photo.classList.toggle('active');
     }
-    setInterval(createFallingIcon, 400);
+
+    function showTicket() {
+        document.getElementById('greeting-ui').style.display = 'none';
+        document.getElementById('ticket-ui').style.display = 'block';
+        // Tambahkan efek konfeti atau getaran di sini jika mau
+    }
+
+    function moveButton() {
+        const btn = document.getElementById('noBtn');
+        const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+        btn.style.position = 'fixed';
+        btn.style.left = x + 'px';
+        btn.style.top = y + 'px';
+    }
 </script>
+
 </body>
 </html>
