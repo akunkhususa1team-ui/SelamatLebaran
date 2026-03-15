@@ -3,125 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Lebaran Aili 🌙</title>
+    <title>Lebaran VIP Aili 🌙</title>
     <style>
         :root{ --green:#1b5e20; --gold:#ffd700; --dark:#0a260a; --card:rgba(255,255,255,.12); }
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; color: white; display: flex; flex-direction: column; }
+        *{margin:0;padding:0;box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+        body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); font-family: 'Segoe UI', Roboto, sans-serif; height: 100vh; overflow: hidden; color: white; display: flex; flex-direction: column; }
         
-        /* Opening Screen */
+        /* Overlay Awal */
         #opening{ position:fixed; inset:0; background:rgba(0,0,0,0.95); display:grid; place-items:center; z-index:9999; cursor:pointer; transition: 0.8s; }
         .fade-out{ opacity:0; pointer-events:none; }
 
-        .container{ flex:1; display:flex; align-items:center; justify-content:center; z-index:10; padding: 20px; }
+        .container{ flex:1; display:flex; align-items:center; justify-content:center; z-index:10; padding: 20px; position: relative; }
         
         /* Kartu Utama */
         .card{ 
-            width:100%; max-width:350px; background:var(--card); backdrop-filter:blur(15px); 
-            border-radius:25px; padding:25px; text-align:center; 
-            border:1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; align-items: center;
-        }
-        
-        /* Container Foto agar perbesaran tetap rapi */
-        .photo-container {
-            width: 130px; height: 130px; /* Ukuran awal bulat */
-            margin-bottom: 15px;
-            position: relative;
-            /* Penting: Transisi smooth untuk perubahannya */
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: visible; /* Biar glow shadow gak kepotong */
+            width:100%; max-width:380px; background:var(--card); backdrop-filter:blur(20px); 
+            border-radius:30px; padding:30px; text-align:center; 
+            border:1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; z-index: 50;
         }
 
-        /* Gaya Foto Dasar */
+        /* Container Foto Pro */
+        .photo-wrapper {
+            width: 130px; height: 130px; margin: 0 auto 20px;
+            position: relative; transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
         .photo{ 
-            width: 100%; height: 100%;
-            border-radius: 20px; /* Sedikit kotak di awal */
-            object-fit:cover; 
-            border:2px solid var(--gold); 
-            box-shadow: 0 0 15px var(--gold); 
-            cursor: pointer;
-            transition: border-radius 0.6s ease; /* Sudut membulat ikut beranimasi */
+            width: 100%; height: 100%; border-radius: 25px; object-fit:cover; 
+            border:2px solid var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); 
+            cursor: pointer; transition: 0.5s;
         }
         
-        /* GAYA SAAT FOTO DIKLIK (SMOOTH TRANSITION) */
-        /* Foto container melebar menjadi potrait */
-        .photo-container.is-zoom { 
-            width: 100%; /* Memenuhi lebar kartu */
-            height: 350px; /* Menjadi potrait panjang */
-        }
+        /* State Foto Saat Membesar (Zoom) */
+        .photo-wrapper.is-zoom { width: 100%; height: 380px; transform: scale(1.02); }
+        .photo-wrapper.is-zoom .photo { border-radius: 20px; }
 
-        /* Foto di dalamnya menyesuaikan */
-        .photo-container.is-zoom .photo {
-            border-radius: 15px; /* Sudut lebih tajam saat besar */
+        /* --- DESAIN TIKET VIP DEWA --- */
+        .ticket {
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 1px solid var(--gold); border-radius: 20px;
+            position: relative; padding: 25px; margin-top: 10px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            display: none; animation: slideUp 0.8s ease forwards;
         }
-
-        /* Konten teks di bawah foto */
-        #content-wrapper {
-            width: 100%;
-            transition: opacity 0.4s ease, transform 0.4s ease;
+        @keyframes slideUp { from{opacity:0; transform: translateY(30px);} to{opacity:1; transform: translateY(0);} }
+        
+        .ticket::before, .ticket::after {
+            content: ''; position: absolute; width: 40px; height: 40px;
+            background: #0d2e0d; border-radius: 50%; top: 50%; transform: translateY(-50%);
+            border: 1px solid var(--gold);
         }
+        .ticket::before { left: -25px; } .ticket::after { right: -25px; }
 
-        /* Sembunyikan teks saat foto sedang dizoom agar rapi */
-        .is-zoom + #content-wrapper {
-            opacity: 0;
-            transform: translateY(20px);
-            pointer-events: none; /* Biar tombol gak bisa diklik pas ngumpet */
-            height: 0; /* Biar gak makan tempat */
-            margin: 0;
+        .ticket-header { border-bottom: 1px dashed rgba(255,215,0,0.4); padding-bottom: 15px; margin-bottom: 20px; }
+        .ticket-body { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left; }
+        .label { color: #777; font-size: 10px; letter-spacing: 1px; font-weight: bold; }
+        .value { color: var(--gold); font-size: 14px; font-weight: 800; margin-top: 2px; }
+
+        /* Tombol DANA Premium */
+        .dana-btn { 
+            display: block; background: linear-gradient(45deg, var(--gold), #ffecb3); 
+            color: #000; text-decoration: none; padding: 15px; border-radius: 12px; 
+            margin-top: 25px; font-weight: 900; text-align: center; 
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3); transition: 0.3s;
         }
+        .dana-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(255, 215, 0, 0.4); }
 
-        .btn-container{ display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
-        button{ padding: 12px 25px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        /* Sembunyikan Konten Saat Zoom */
+        #content-wrapper { transition: 0.5s; }
+        .photo-wrapper.is-zoom + #content-wrapper { opacity: 0; pointer-events: none; transform: scale(0.9); }
+
+        .btn-container{ display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        button{ padding: 14px 28px; border-radius: 15px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
         #yesBtn{ background: var(--gold); color: black; }
-        #noBtn{ background: #444; color: white; position: relative; }
+        #noBtn{ background: rgba(255,255,255,0.1); color: white; position: relative; }
 
-        .dana-btn{ display: none; background: #118eea; color: white; text-decoration: none; padding: 15px; border-radius: 12px; margin-top: 20px; font-weight: bold; animation: pulse 1.5s infinite; text-align: center; width: 100%; }
-        @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
-        
-        .running{ background: var(--green); padding: 12px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--gold); z-index: 100; }
-        .running span{ display: inline-block; animation: scroll 18s linear infinite; color: var(--gold); font-weight: bold; }
+        .running{ background: var(--green); padding: 15px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--gold); z-index: 100; }
+        .running span{ display: inline-block; animation: scroll 20s linear infinite; color: var(--gold); font-weight: bold; font-size: 14px; }
         @keyframes scroll{ from{ transform: translateX(100%); } to { transform: translateX(-100%); } }
 
-        .item{ position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.5; z-index: 1; }
+        .item{ position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.4; z-index: 1; }
         @keyframes fall{ to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
-<body>
+<body id="bodyArea">
 
 <div id="opening">
-    <h2 style="color: var(--gold); font-size: 30px;">🌙 Klik untuk Aili 🌙</h2>
+    <div style="text-align: center;">
+        <h2 style="color: var(--gold); font-size: 35px; letter-spacing: 5px; margin-bottom: 10px;">EID AL-FITR</h2>
+        <p style="font-size: 12px; letter-spacing: 2px; opacity: 0.7;">CLICK TO ENTER</p>
+    </div>
 </div>
 
-<div class="container">
-    <div class="card">
-        <h2 style="color: var(--gold); margin-bottom: 15px;">Selamat Lebaran Aili ✨</h2>
+<div class="container" id="containerArea">
+    <div class="card" id="cardArea">
+        <h2 style="color: var(--gold); margin-bottom: 20px; font-size: 24px; letter-spacing: 1px;">Selamat Lebaran Aili ✨</h2>
         
-        <div class="photo-container" id="pContainer">
-            <img src="foto.jpg" class="photo" alt="Foto">
+        <div class="photo-wrapper" id="pWrapper">
+            <img src="foto.jpg" class="photo" id="mainPhoto" alt="Foto">
         </div>
         
         <div id="content-wrapper">
             <div id="awal">
-                <p style="font-size: 14px;">Minal Aidin Wal Faizin, mohon maaf lahir dan batin ya!</p>
-                <p style="margin: 20px 0; font-weight: bold;">Boleh aku mampir ke rumah? 🥺</p>
+                <p style="font-size: 15px; opacity: 0.9; line-height: 1.6;">Minal Aidin Wal Faizin,<br>mohon maaf lahir dan batin ya.</p>
+                <p style="margin: 25px 0 10px; font-weight: bold; color: var(--gold); font-size: 17px;">Boleh aku mampir? 🥺</p>
                 <div class="btn-container">
-                    <button id="yesBtn">Boleh! 🙏</button>
-                    <button id="noBtn">Nggak 😜</button>
+                    <button id="yesBtn">BOLEH! 🙏</button>
+                    <button id="noBtn">NGGAK 😜</button>
                 </div>
             </div>
 
-            <div id="akhir" style="display: none;">
-                <p>Alhamdulillah! Sampai ketemu nanti! 🥳</p>
-                <p style="margin: 15px 0; font-size: 13px;">Ini THR khusus buat kamu:</p>
-                <a href="https://link.dana.id/kaget/xxxxx" target="_blank" class="dana-btn" id="danaBtn">AMBIL THR DI SINI 🧧</a>
+            <div id="akhir" class="ticket">
+                <div class="ticket-header">
+                    <p style="font-size: 18px; font-weight: 900; color: var(--gold); letter-spacing: 2px;">VIP THR PASS</p>
+                    <p style="font-size: 10px; color: #fff; margin-top: 5px;">EXCLUSIVE FOR AILI</p>
+                </div>
+                <div class="ticket-body">
+                    <div><p class="label">HOLDER</p><p class="value">AILI</p></div>
+                    <div style="text-align: right;"><p class="label">GATE</p><p class="value">HEAVEN A1</p></div>
+                    <div><p class="label">PRIORITY</p><p class="value">ULTRA VIP</p></div>
+                    <div style="text-align: right;"><p class="label">CODE</p><p class="value">EID-2026</p></div>
+                </div>
+                <div style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
+                    <p class="label">STATUS</p>
+                    <p class="value" style="font-size: 20px;">VERIFIED ✅</p>
+                </div>
+                <a href="https://link.dana.id/kaget/xxxxx" target="_blank" class="dana-btn">CLAIM YOUR THR 🧧</a>
             </div>
         </div>
     </div>
 </div>
 
 <div class="running">
-    <span>🌙 Selamat Hari Raya Idul Fitri Aili! 🌙 Mohon Maaf Lahir dan Batin 🌙 Cek THR-nya ya! 🌙</span>
+    <span>🌙 Minal Aidin Wal Faizin Aili! 🌙 Selamat Lebaran! 🌙 Ditunggu Opor Ayamnya ya! 🌙 Cek Tiket THR Kamu! 🌙</span>
 </div>
 
 <audio id="mainAudio" src="lebaran.mp3" loop></audio>
@@ -129,51 +145,64 @@
 <script>
     const opening = document.getElementById('opening');
     const audio = document.getElementById('mainAudio');
-    const photo = document.querySelector('.photo');
-    const pContainer = document.getElementById('pContainer');
+    const pWrapper = document.getElementById('pWrapper');
+    const photo = document.getElementById('mainPhoto');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
     const awal = document.getElementById('awal');
     const akhir = document.getElementById('akhir');
-    const danaBtn = document.getElementById('danaBtn');
+    const containerArea = document.getElementById('containerArea');
 
-    // Klik untuk masuk
-    opening.onclick = () => {
+    // Masuk & Putar Musik
+    opening.onclick = (e) => {
+        e.stopPropagation();
         opening.classList.add('fade-out');
-        audio.play().catch(e => console.log("Audio diblokir/tidak ada"));
+        audio.play().catch(e => console.log("Audio play error"));
     };
 
-    // ANIMASI ZOOM BARU: Smooth dan tetap di dalam kartu
-    photo.onclick = () => {
-        pContainer.classList.toggle('is-zoom');
+    // --- DISMISS SYSTEM PRO ---
+    // Klik foto untuk Zoom/Unzoom
+    photo.onclick = (e) => {
+        e.stopPropagation();
+        pWrapper.classList.toggle('is-zoom');
     };
 
-    // Tombol No kabur
+    // Klik dimana saja di luar foto untuk Unzoom (Dismiss)
+    window.onclick = () => {
+        if (pWrapper.classList.contains('is-zoom')) {
+            pWrapper.classList.remove('is-zoom');
+        }
+    };
+
+    // Tombol No Kabur
     noBtn.onmouseover = () => {
         noBtn.style.position = 'fixed';
         noBtn.style.left = Math.random() * 80 + 'vw';
         noBtn.style.top = Math.random() * 80 + 'vh';
+        noBtn.style.zIndex = '9999';
     };
 
-    // Klik Yes muncul THR
-    yesBtn.onclick = () => {
+    // Tombol Boleh (Pindah ke Tiket & Hapus Foto)
+    yesBtn.onclick = (e) => {
+        e.stopPropagation();
+        pWrapper.style.display = 'none'; // Foto Dihapus Total
         awal.style.display = 'none';
         akhir.style.display = 'block';
-        danaBtn.style.display = 'block';
     };
 
-    // Animasi item jatuh
+    // Efek Animasi Melayang
     function createIcon() {
-        const items = ['🌙','⭐','🧧','🫔'];
+        const items = ['🌙','⭐','🧧','✨'];
         const div = document.createElement('div');
         div.className = 'item';
         div.innerHTML = items[Math.floor(Math.random()*items.length)];
         div.style.left = Math.random() * 100 + 'vw';
+        div.style.fontSize = Math.random() * 20 + 15 + 'px';
         div.style.animationDuration = (Math.random() * 2 + 3) + 's';
         document.body.appendChild(div);
         setTimeout(() => div.remove(), 5000);
     }
-    setInterval(createIcon, 600);
+    setInterval(createIcon, 500);
 </script>
 </body>
 </html>
