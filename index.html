@@ -7,30 +7,30 @@
     <style>
         :root{ --green:#1b5e20; --gold:#ffd700; --dark:#0a260a; --card:rgba(255,255,255,.12); }
         *{margin:0;padding:0;box-sizing:border-box}
-        body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); font-family: sans-serif; height: 100vh; overflow: hidden; color: white; display: flex; flex-direction: column; }
+        body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; color: white; display: flex; flex-direction: column; }
         
-        /* Opening Screen */
-        #opening{ position:fixed; inset:0; background:rgba(0,0,0,0.9); display:grid; place-items:center; z-index:9999; cursor:pointer; text-align:center; }
-        .fade-out{ opacity:0; pointer-events:none; transition: 0.8s; }
+        #opening{ position:fixed; inset:0; background:rgba(0,0,0,0.92); display:grid; place-items:center; z-index:9999; cursor:pointer; text-align:center; transition: 0.8s; }
+        .fade-out{ opacity:0; pointer-events:none; }
 
-        .container{ flex:1; display:flex; align-items:center; justify-content:center; z-index:10; }
-        .card{ width:90%; max-width:350px; background:var(--card); backdrop-filter:blur(15px); border-radius:25px; padding:20px; text-align:center; border:1px solid rgba(255,255,255,0.1); }
+        .container{ flex:1; display:flex; align-items:center; justify-content:center; z-index:10; padding: 20px; }
+        .card{ width:100%; max-width:350px; background:var(--card); backdrop-filter:blur(15px); border-radius:25px; padding:25px; text-align:center; border:1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
         .photo{ width:130px; height:130px; border-radius:20px; object-fit:cover; border:2px solid var(--gold); box-shadow: 0 0 15px var(--gold); margin-bottom: 15px; transition: 0.5s; cursor: pointer; }
-        .is-portrait{ width: 250px; height: 350px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; }
+        .is-portrait{ width: 260px; height: 380px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; }
 
         .btn-container{ display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
-        button{ padding: 10px 20px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-        #yesBtn{ background: var(--gold); color: black; }
-        #noBtn{ background: #444; color: white; }
+        button{ padding: 12px 25px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        #yesBtn{ background: var(--gold); color: black; box-shadow: 0 0 10px var(--gold); }
+        #noBtn{ background: #444; color: white; position: relative; }
 
-        .dana-btn{ display: none; background: #118eea; color: white; text-decoration: none; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; }
+        .dana-btn{ display: none; background: #118eea; color: white; text-decoration: none; padding: 15px; border-radius: 12px; margin-top: 20px; font-weight: bold; animation: pulse 1.5s infinite; text-align: center; width: 100%; }
+        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.03);} 100% {transform: scale(1);} }
         
-        .running{ background: var(--green); padding: 10px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--gold); }
-        .running span{ display: inline-block; animation: scroll 15s linear infinite; color: var(--gold); font-weight: bold; }
+        .running{ background: var(--green); padding: 12px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--gold); }
+        .running span{ display: inline-block; animation: scroll 18s linear infinite; color: var(--gold); font-weight: bold; }
         @keyframes scroll{ from{ transform: translateX(100%); } to { transform: translateX(-100%); } }
 
-        .item{ position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.6; }
+        .item{ position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.6; z-index: 1; }
         @keyframes fall{ to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
@@ -38,8 +38,7 @@
 
 <div id="opening">
     <div style="color: var(--gold);">
-        <h2>🌙 Klik untuk Aili 🌙</h2>
-        <p style="font-size: 12px; margin-top: 10px;">Pastikan volume aktif</p>
+        <h2 style="font-size: 28px;">🌙 Klik untuk Aili 🌙</h2>
     </div>
 </div>
 
@@ -49,8 +48,8 @@
         <img src="foto.jpg" class="photo" id="mainPhoto" alt="Foto">
         
         <div id="awal">
-            <p style="font-size: 14px; opacity: 0.9;">Minal Aidin Wal Faizin, mohon maaf lahir dan batin ya!</p>
-            <p style="margin: 15px 0;">Boleh aku mampir? 🥺</p>
+            <p style="font-size: 14px; line-height: 1.5;">Minal Aidin Wal Faizin, mohon maaf lahir dan batin ya!</p>
+            <p style="margin: 20px 0; font-weight: bold;">Boleh aku mampir ke rumah? 🥺</p>
             <div class="btn-container">
                 <button id="yesBtn">Boleh! 🙏</button>
                 <button id="noBtn">Nggak 😜</button>
@@ -58,15 +57,15 @@
         </div>
 
         <div id="akhir" style="display: none;">
-            <p>Yeeay! Sampai ketemu nanti! 🥳</p>
-            <p style="margin: 10px 0; font-size: 13px;">Ini THR kecil-kecilan buat kamu:</p>
-            <a href="LINK_DANA_KAGET_KAMU" target="_blank" class="dana-btn" id="danaBtn">AMBIL THR DI SINI 🧧</a>
+            <p>Alhamdulillah! Sampai ketemu nanti! 🥳</p>
+            <p style="margin: 15px 0; font-size: 13px;">Ini THR khusus buat kamu:</p>
+            <a href="LINK_DANA_KAGET_MU" target="_blank" class="dana-btn" id="danaBtn">AMBIL THR DI SINI 🧧</a>
         </div>
     </div>
 </div>
 
 <div class="running">
-    <span>🌙 Mohon Maaf Lahir dan Batin Aili! 🌙 Ditunggu Opor Ayamnya ya! 🌙 Cek THR di tombol ya! 🌙</span>
+    <span>🌙 Selamat Hari Raya Idul Fitri Aili! 🌙 Mohon Maaf Lahir dan Batin 🌙 Jangan lupa cek THR-nya ya! 🌙</span>
 </div>
 
 <audio id="mainAudio" src="lebaran.mp3" loop></audio>
@@ -81,36 +80,42 @@
     const akhir = document.getElementById('akhir');
     const danaBtn = document.getElementById('danaBtn');
 
+    // Klik untuk masuk & putar musik
     opening.onclick = () => {
         opening.classList.add('fade-out');
-        audio.play().catch(() => console.log("Audio diblokir browser"));
+        audio.play().catch(() => console.log("Audio dimainkan setelah interaksi"));
     };
 
+    // Zoom foto
     photo.onclick = () => photo.classList.toggle('is-portrait');
 
+    // Tombol No kabur
     noBtn.onmouseover = () => {
         noBtn.style.position = 'fixed';
         noBtn.style.left = Math.random() * 80 + 'vw';
         noBtn.style.top = Math.random() * 80 + 'vh';
     };
 
+    // Klik Yes muncul THR
     yesBtn.onclick = () => {
         awal.style.display = 'none';
         akhir.style.display = 'block';
-        danaBtn.style.display = 'inline-block';
+        danaBtn.style.display = 'block';
     };
 
+    // Animasi item jatuh
     function createIcon() {
-        const items = ['🌙','⭐','🧧','🫔'];
+        const items = ['🌙','⭐','🧧','🫔','✨'];
         const div = document.createElement('div');
         div.className = 'item';
         div.innerHTML = items[Math.floor(Math.random()*items.length)];
         div.style.left = Math.random() * 100 + 'vw';
-        div.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        div.style.fontSize = Math.random() * 20 + 10 + 'px';
+        div.style.animationDuration = (Math.random() * 3 + 4) + 's';
         document.body.appendChild(div);
-        setTimeout(() => div.remove(), 6000);
+        setTimeout(() => div.remove(), 7000);
     }
-    setInterval(createIcon, 700);
+    setInterval(createIcon, 600);
 </script>
 
 </body>
