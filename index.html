@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Lebaran VIP Aili 🌙</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Montserrat:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family='Segoe UI':wght@700&family=Roboto, sans-serif:wght@400;800&display=swap" rel="stylesheet">
     <style>
         :root { 
             --green: #0a3d0a; 
@@ -37,10 +37,20 @@
             transition: 0.5s; position: relative;
         }
 
-        /* --- Zoom Foto Portrait --- */
-        .photo-wrapper { width: 120px; height: 120px; margin: 0 auto 20px; position: relative; transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1); z-index: 100; }
-        .photo { width: 100%; height: 100%; border-radius: 30px; object-fit: cover; border: 2.5px solid var(--gold); box-shadow: 0 0 25px rgba(255, 215, 0, 0.3); cursor: pointer; }
-        .photo-wrapper.is-zoom { width: 100%; height: 420px; }
+         /* Container Foto Pro */
+        .photo-wrapper {
+            width: 130px; height: 130px; margin: 0 auto 20px;
+            position: relative; transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+        .photo{ 
+            width: 100%; height: 100%; border-radius: 25px; object-fit:cover; 
+            border:2px solid var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); 
+            cursor: pointer; transition: 0.5s;
+        }
+        
+        /* State Foto Saat Membesar (Zoom) */
+        .photo-wrapper.is-zoom { width: 100%; height: 380px; transform: scale(1.02); }
         .photo-wrapper.is-zoom .photo { border-radius: 20px; }
 
         /* --- TIKET VIP DEWA VERSION --- */
@@ -120,8 +130,8 @@
             <h2 style="color: var(--gold); margin-bottom: 20px; font-size: 22px; font-weight: 800;">Selamat Lebaran Aili ✨</h2>
         </div>
         
-        <div class="photo-wrapper" id="pWrapper" onclick="toggleZoom(event)">
-            <img src="foto.jpg" class="photo" id="mainPhoto" alt="Aili">
+        <div class="photo-wrapper" id="pWrapper">
+            <img src="foto.jpg" class="photo" id="mainPhoto" alt="Foto">
         </div>
         
         <div id="content-main">
