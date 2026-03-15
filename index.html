@@ -9,63 +9,119 @@
         *{margin:0;padding:0;box-sizing:border-box}
         body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; color: white; display: flex; flex-direction: column; }
         
-        #opening{ position:fixed; inset:0; background:rgba(0,0,0,0.92); display:grid; place-items:center; z-index:9999; cursor:pointer; text-align:center; transition: 0.8s; }
+        /* Opening Screen */
+        #opening{ position:fixed; inset:0; background:rgba(0,0,0,0.95); display:grid; place-items:center; z-index:9999; cursor:pointer; transition: 0.8s; }
         .fade-out{ opacity:0; pointer-events:none; }
 
         .container{ flex:1; display:flex; align-items:center; justify-content:center; z-index:10; padding: 20px; }
-        .card{ width:100%; max-width:350px; background:var(--card); backdrop-filter:blur(15px); border-radius:25px; padding:25px; text-align:center; border:1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        .photo{ width:130px; height:130px; border-radius:20px; object-fit:cover; border:2px solid var(--gold); box-shadow: 0 0 15px var(--gold); margin-bottom: 15px; transition: 0.5s; cursor: pointer; }
-        .is-portrait{ width: 260px; height: 380px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; }
+        /* Kartu Utama */
+        .card{ 
+            width:100%; max-width:350px; background:var(--card); backdrop-filter:blur(15px); 
+            border-radius:25px; padding:25px; text-align:center; 
+            border:1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        
+        /* Container Foto agar perbesaran tetap rapi */
+        .photo-container {
+            width: 130px; height: 130px; /* Ukuran awal bulat */
+            margin-bottom: 15px;
+            position: relative;
+            /* Penting: Transisi smooth untuk perubahannya */
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: visible; /* Biar glow shadow gak kepotong */
+        }
+
+        /* Gaya Foto Dasar */
+        .photo{ 
+            width: 100%; height: 100%;
+            border-radius: 20px; /* Sedikit kotak di awal */
+            object-fit:cover; 
+            border:2px solid var(--gold); 
+            box-shadow: 0 0 15px var(--gold); 
+            cursor: pointer;
+            transition: border-radius 0.6s ease; /* Sudut membulat ikut beranimasi */
+        }
+        
+        /* GAYA SAAT FOTO DIKLIK (SMOOTH TRANSITION) */
+        /* Foto container melebar menjadi potrait */
+        .photo-container.is-zoom { 
+            width: 100%; /* Memenuhi lebar kartu */
+            height: 350px; /* Menjadi potrait panjang */
+        }
+
+        /* Foto di dalamnya menyesuaikan */
+        .photo-container.is-zoom .photo {
+            border-radius: 15px; /* Sudut lebih tajam saat besar */
+        }
+
+        /* Konten teks di bawah foto */
+        #content-wrapper {
+            width: 100%;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        /* Sembunyikan teks saat foto sedang dizoom agar rapi */
+        .is-zoom + #content-wrapper {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none; /* Biar tombol gak bisa diklik pas ngumpet */
+            height: 0; /* Biar gak makan tempat */
+            margin: 0;
+        }
 
         .btn-container{ display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
         button{ padding: 12px 25px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        #yesBtn{ background: var(--gold); color: black; box-shadow: 0 0 10px var(--gold); }
+        #yesBtn{ background: var(--gold); color: black; }
         #noBtn{ background: #444; color: white; position: relative; }
 
         .dana-btn{ display: none; background: #118eea; color: white; text-decoration: none; padding: 15px; border-radius: 12px; margin-top: 20px; font-weight: bold; animation: pulse 1.5s infinite; text-align: center; width: 100%; }
-        @keyframes pulse { 0% {transform: scale(1);} 50% {transform: scale(1.03);} 100% {transform: scale(1);} }
+        @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
         
-        .running{ background: var(--green); padding: 12px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--gold); }
+        .running{ background: var(--green); padding: 12px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--gold); z-index: 100; }
         .running span{ display: inline-block; animation: scroll 18s linear infinite; color: var(--gold); font-weight: bold; }
         @keyframes scroll{ from{ transform: translateX(100%); } to { transform: translateX(-100%); } }
 
-        .item{ position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.6; z-index: 1; }
+        .item{ position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.5; z-index: 1; }
         @keyframes fall{ to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
 
 <div id="opening">
-    <div style="color: var(--gold);">
-        <h2 style="font-size: 28px;">🌙 Klik untuk Aili 🌙</h2>
-    </div>
+    <h2 style="color: var(--gold); font-size: 30px;">🌙 Klik untuk Aili 🌙</h2>
 </div>
 
 <div class="container">
     <div class="card">
         <h2 style="color: var(--gold); margin-bottom: 15px;">Selamat Lebaran Aili ✨</h2>
-        <img src="foto.jpg" class="photo" id="mainPhoto" alt="Foto">
         
-        <div id="awal">
-            <p style="font-size: 14px; line-height: 1.5;">Minal Aidin Wal Faizin, mohon maaf lahir dan batin ya!</p>
-            <p style="margin: 20px 0; font-weight: bold;">Boleh aku mampir ke rumah? 🥺</p>
-            <div class="btn-container">
-                <button id="yesBtn">Boleh! 🙏</button>
-                <button id="noBtn">Nggak 😜</button>
-            </div>
+        <div class="photo-container" id="pContainer">
+            <img src="foto.jpg" class="photo" alt="Foto">
         </div>
+        
+        <div id="content-wrapper">
+            <div id="awal">
+                <p style="font-size: 14px;">Minal Aidin Wal Faizin, mohon maaf lahir dan batin ya!</p>
+                <p style="margin: 20px 0; font-weight: bold;">Boleh aku mampir ke rumah? 🥺</p>
+                <div class="btn-container">
+                    <button id="yesBtn">Boleh! 🙏</button>
+                    <button id="noBtn">Nggak 😜</button>
+                </div>
+            </div>
 
-        <div id="akhir" style="display: none;">
-            <p>Alhamdulillah! Sampai ketemu nanti! 🥳</p>
-            <p style="margin: 15px 0; font-size: 13px;">Ini THR khusus buat kamu:</p>
-            <a href="LINK_DANA_KAGET_MU" target="_blank" class="dana-btn" id="danaBtn">AMBIL THR DI SINI 🧧</a>
+            <div id="akhir" style="display: none;">
+                <p>Alhamdulillah! Sampai ketemu nanti! 🥳</p>
+                <p style="margin: 15px 0; font-size: 13px;">Ini THR khusus buat kamu:</p>
+                <a href="https://link.dana.id/kaget/xxxxx" target="_blank" class="dana-btn" id="danaBtn">AMBIL THR DI SINI 🧧</a>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="running">
-    <span>🌙 Selamat Hari Raya Idul Fitri Aili! 🌙 Mohon Maaf Lahir dan Batin 🌙 Jangan lupa cek THR-nya ya! 🌙</span>
+    <span>🌙 Selamat Hari Raya Idul Fitri Aili! 🌙 Mohon Maaf Lahir dan Batin 🌙 Cek THR-nya ya! 🌙</span>
 </div>
 
 <audio id="mainAudio" src="lebaran.mp3" loop></audio>
@@ -73,21 +129,24 @@
 <script>
     const opening = document.getElementById('opening');
     const audio = document.getElementById('mainAudio');
-    const photo = document.getElementById('mainPhoto');
+    const photo = document.querySelector('.photo');
+    const pContainer = document.getElementById('pContainer');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
     const awal = document.getElementById('awal');
     const akhir = document.getElementById('akhir');
     const danaBtn = document.getElementById('danaBtn');
 
-    // Klik untuk masuk & putar musik
+    // Klik untuk masuk
     opening.onclick = () => {
         opening.classList.add('fade-out');
-        audio.play().catch(() => console.log("Audio dimainkan setelah interaksi"));
+        audio.play().catch(e => console.log("Audio diblokir/tidak ada"));
     };
 
-    // Zoom foto
-    photo.onclick = () => photo.classList.toggle('is-portrait');
+    // ANIMASI ZOOM BARU: Smooth dan tetap di dalam kartu
+    photo.onclick = () => {
+        pContainer.classList.toggle('is-zoom');
+    };
 
     // Tombol No kabur
     noBtn.onmouseover = () => {
@@ -105,18 +164,16 @@
 
     // Animasi item jatuh
     function createIcon() {
-        const items = ['🌙','⭐','🧧','🫔','✨'];
+        const items = ['🌙','⭐','🧧','🫔'];
         const div = document.createElement('div');
         div.className = 'item';
         div.innerHTML = items[Math.floor(Math.random()*items.length)];
         div.style.left = Math.random() * 100 + 'vw';
-        div.style.fontSize = Math.random() * 20 + 10 + 'px';
-        div.style.animationDuration = (Math.random() * 3 + 4) + 's';
+        div.style.animationDuration = (Math.random() * 2 + 3) + 's';
         document.body.appendChild(div);
-        setTimeout(() => div.remove(), 7000);
+        setTimeout(() => div.remove(), 5000);
     }
     setInterval(createIcon, 600);
 </script>
-
 </body>
 </html>
