@@ -3,72 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Lebaran Bersama Aili 🌙</title>
+    <title>Lebaran Aili 🌙</title>
     <style>
         :root{ --green:#1b5e20; --gold:#ffd700; --dark:#0a260a; --card:rgba(255,255,255,.12); }
         *{margin:0;padding:0;box-sizing:border-box}
-        html,body{width:100%;height:100%;font-family:"Segoe UI",Arial,sans-serif; overflow:hidden;}
-        body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); display:flex; flex-direction:column; color:white; }
-
-        #opening{ position:fixed; inset:0; background:rgba(0,0,0,.95); backdrop-filter:blur(20px); display:grid; place-items:center; font-size:24px; cursor:pointer; z-index:9999; transition:0.8s; color: var(--gold); text-align:center; padding:20px; }
-        .fade-out{opacity:0; pointer-events:none}
-        #bg-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; z-index: 400; }
-
-        .container{ flex:1; display:flex; align-items:center; justify-content:center; padding:15px; z-index:10; }
-        .card{ 
-            width:100%; max-width:380px; background:var(--card); backdrop-filter:blur(15px); 
-            border-radius:30px; padding:25px 20px; text-align:center; 
-            box-shadow:0 20px 50px rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1);
-            position: relative; z-index: 100;
-        }
-
-        .photo-wrapper { width: 140px; height: 140px; margin: 0 auto 15px; position: relative; z-index: 110; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .photo { width: 100%; height: 100%; border-radius: 20px; object-fit: cover; box-shadow: 0 0 20px var(--gold); border: 2px solid var(--gold); cursor: pointer; }
-        .is-portrait { width: 280px !important; height: 380px !important; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 500; }
-
-        .info-box { margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 20px; text-align: left; border: 1px solid rgba(255,255,255,0.1); font-size: 14px; }
-        .buttons { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; align-items: center; gap: 20px; }
-        button { padding: 12px 25px; border-radius: 15px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); font-family: sans-serif; height: 100vh; overflow: hidden; color: white; display: flex; flex-direction: column; }
         
-        #yesBtn { background: var(--gold); color: black; box-shadow: 0 0 15px var(--gold); }
-        #noBtn { background: #444; color: white; position: relative; }
+        /* Opening Screen */
+        #opening{ position:fixed; inset:0; background:rgba(0,0,0,0.9); display:grid; place-items:center; z-index:9999; cursor:pointer; text-align:center; }
+        .fade-out{ opacity:0; pointer-events:none; transition: 0.8s; }
+
+        .container{ flex:1; display:flex; align-items:center; justify-content:center; z-index:10; }
+        .card{ width:90%; max-width:350px; background:var(--card); backdrop-filter:blur(15px); border-radius:25px; padding:20px; text-align:center; border:1px solid rgba(255,255,255,0.1); }
         
-        .dana-btn { 
-            background: #118eea; color: white; display: none; margin-top: 20px; text-decoration: none; 
-            padding: 15px; border-radius: 15px; font-weight: bold; animation: pulse 1.5s infinite; text-align: center;
-        }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .photo{ width:130px; height:130px; border-radius:20px; object-fit:cover; border:2px solid var(--gold); box-shadow: 0 0 15px var(--gold); margin-bottom: 15px; transition: 0.5s; cursor: pointer; }
+        .is-portrait{ width: 250px; height: 350px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; }
 
-        .falling-item { position: fixed; top: -50px; animation: fall linear infinite; z-index: 1; opacity: 0.7; pointer-events: none; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        .btn-container{ display: flex; justify-content: center; gap: 15px; margin-top: 15px; }
+        button{ padding: 10px 20px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        #yesBtn{ background: var(--gold); color: black; }
+        #noBtn{ background: #444; color: white; }
 
-        .running { background: var(--green); padding: 12px 0; overflow: hidden; white-space: nowrap; border-top: 2px solid var(--gold); position: relative; z-index: 1000; }
-        .running span { display: inline-block; padding-left: 100%; animation: scroll 20s linear infinite; font-weight: bold; color: var(--gold); }
-        @keyframes scroll { to { transform: translateX(-100%); } }
+        .dana-btn{ display: none; background: #118eea; color: white; text-decoration: none; padding: 12px; border-radius: 10px; margin-top: 15px; font-weight: bold; }
+        
+        .running{ background: var(--green); padding: 10px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--gold); }
+        .running span{ display: inline-block; animation: scroll 15s linear infinite; color: var(--gold); font-weight: bold; }
+        @keyframes scroll{ from{ transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+        .item{ position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.6; }
+        @keyframes fall{ to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div id="opening">🌙 Klik untuk Aili 🌙<br><small style="font-size: 14px;">Klik di mana saja untuk mulai</small></div>
-    <div id="bg-overlay"></div>
+<div id="opening">
+    <div style="color: var(--gold);">
+        <h2>🌙 Klik untuk Aili 🌙</h2>
+        <p style="font-size: 12px; margin-top: 10px;">Pastikan volume aktif</p>
+    </div>
+</div>
 
-    <div class="container">
-        <div class="card">
-            <h1 style="color: var(--gold); font-size: 20px; margin-bottom: 10px;">Selamat Lebaran Aili ✨</h1>
-            <div class="photo-wrapper" id="pWrapper">
-                <img src="halo/foto.jpg" class="photo" id="mainPhoto" alt="Aili" onerror="this.src='https://via.placeholder.com/150?text=Foto+Tidak+Ada'">
+<div class="container">
+    <div class="card">
+        <h2 style="color: var(--gold); margin-bottom: 15px;">Selamat Lebaran Aili ✨</h2>
+        <img src="foto.jpg" class="photo" id="mainPhoto" alt="Foto">
+        
+        <div id="awal">
+            <p style="font-size: 14px; opacity: 0.9;">Minal Aidin Wal Faizin, mohon maaf lahir dan batin ya!</p>
+            <p style="margin: 15px 0;">Boleh aku mampir? 🥺</p>
+            <div class="btn-container">
+                <button id="yesBtn">Boleh! 🙏</button>
+                <button id="noBtn">Nggak 😜</button>
             </div>
+        </div>
 
-            <div id="content-awal">
-                <div class="info-box">
-                    <p>🕌 Maaf Lahir & Batin ya!</p>
-                    <p>📅 Sampai ketemu di hari raya!</p>
-                </div>
-                <p style="margin: 10px 0;">Boleh aku mampir ke rumahmu? 🥺</p>
-                <div class="buttons">
-                    <button id="yesBtn">Boleh! 🙏</button>
-                    <button id="noBtn">Nggak 😜</button>
-                </div>
-            </div>
+        <div id="akhir" style="display: none;">
+            <p>Yeeay! Sampai ketemu nanti! 🥳</p>
+            <p style="margin: 10px 0; font-size: 13px;">Ini THR kecil-kecilan buat kamu:</p>
+            <a href="LINK_DANA_KAGET_KAMU" target="_blank" class="dana-btn" id="danaBtn">AMBIL THR DI SINI 🧧</a>
+        </div>
+    </div>
+</div>
 
-            <div id="content-akhir" style="
+<div class="running">
+    <span>🌙 Mohon Maaf Lahir dan Batin Aili! 🌙 Ditunggu Opor Ayamnya ya! 🌙 Cek THR di tombol ya! 🌙</span>
+</div>
+
+<audio id="mainAudio" src="lebaran.mp3" loop></audio>
+
+<script>
+    const opening = document.getElementById('opening');
+    const audio = document.getElementById('mainAudio');
+    const photo = document.getElementById('mainPhoto');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const awal = document.getElementById('awal');
+    const akhir = document.getElementById('akhir');
+    const danaBtn = document.getElementById('danaBtn');
+
+    opening.onclick = () => {
+        opening.classList.add('fade-out');
+        audio.play().catch(() => console.log("Audio diblokir browser"));
+    };
+
+    photo.onclick = () => photo.classList.toggle('is-portrait');
+
+    noBtn.onmouseover = () => {
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = Math.random() * 80 + 'vw';
+        noBtn.style.top = Math.random() * 80 + 'vh';
+    };
+
+    yesBtn.onclick = () => {
+        awal.style.display = 'none';
+        akhir.style.display = 'block';
+        danaBtn.style.display = 'inline-block';
+    };
+
+    function createIcon() {
+        const items = ['🌙','⭐','🧧','🫔'];
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = items[Math.floor(Math.random()*items.length)];
+        div.style.left = Math.random() * 100 + 'vw';
+        div.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        document.body.appendChild(div);
+        setTimeout(() => div.remove(), 6000);
+    }
+    setInterval(createIcon, 700);
+</script>
+
+</body>
+</html>
