@@ -3,141 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Lebaran Aili 🌙</title>
+    <title>Lebaran VIP Aili 🌙</title>
     <style>
         :root{ --green:#1b5e20; --gold:#ffd700; --dark:#0a260a; --card:rgba(255,255,255,.12); }
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden; color: white; display: flex; flex-direction: column; }
+        *{margin:0;padding:0;box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+        body{ background:radial-gradient(circle at top, #1b5e20, var(--dark)); font-family: 'Segoe UI', Roboto, sans-serif; height: 100vh; overflow: hidden; color: white; display: flex; flex-direction: column; }
         
+        /* Overlay Awal */
         #opening{ position:fixed; inset:0; background:rgba(0,0,0,0.95); display:grid; place-items:center; z-index:9999; cursor:pointer; transition: 0.8s; }
-        .fade-out{opacity:0; pointer-events:none}
+        .fade-out{ opacity:0; pointer-events:none; }
 
-        .container{ flex:1; display:flex; align-items:center; justify-content:center; z-index:10; padding: 20px; }
-        .card{ width:100%; max-width:350px; background:var(--card); backdrop-filter:blur(15px); border-radius:30px; padding:25px; text-align:center; border:1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
+        .container{ flex:1; display:flex; align-items:center; justify-content:center; z-index:10; padding: 20px; position: relative; }
         
-        .photo-wrapper { width: 140px; height: 140px; margin: 0 auto 15px; position: relative; transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .photo { width: 100%; height: 100%; border-radius: 20px; object-fit: cover; box-shadow: 0 0 20px var(--gold); border: 2px solid var(--gold); cursor: pointer; transition: 0.3s; }
+        /* Kartu Utama */
+        .card{ 
+            width:100%; max-width:380px; background:var(--card); backdrop-filter:blur(20px); 
+            border-radius:30px; padding:30px; text-align:center; 
+            border:1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; z-index: 50;
+        }
+
+        /* Container Foto Pro */
+        .photo-wrapper {
+            width: 130px; height: 130px; margin: 0 auto 20px;
+            position: relative; transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+        .photo{ 
+            width: 100%; height: 100%; border-radius: 25px; object-fit:cover; 
+            border:2px solid var(--gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); 
+            cursor: pointer; transition: 0.5s;
+        }
         
         /* State Foto Saat Membesar (Zoom) */
-        .is-portrait { width: 280px !important; height: 380px !important; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 500; }
+        .photo-wrapper.is-zoom { width: 100%; height: 380px; transform: scale(1.02); }
+        .photo-wrapper.is-zoom .photo { border-radius: 20px; }
 
-        .info-box { margin: 15px 0; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 20px; text-align: left; border: 1px solid rgba(255,255,255,0.1); }
-        .info-item { font-size: 13px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-
-        .buttons { position: relative; width: 100%; height: 80px; display: flex; justify-content: center; align-items: center; gap: 20px; z-index: 100; }
-        button { padding: 12px 25px; border-radius: 15px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        #yesBtn { background: var(--gold); color: black; }
-        #noBtn { background: #444; color: white; position: relative; z-index: 99; }
-        
-        .dana-btn { 
-            display: none; background: #118eea; color: white; text-decoration: none; 
-            padding: 15px; border-radius: 15px; margin-top: 20px; font-weight: bold; animation: pulse 1.5s infinite; text-align: center; width: 100%;
+        /* --- DESAIN TIKET VIP DEWA --- */
+        .ticket {
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 1px solid var(--gold); border-radius: 20px;
+            position: relative; padding: 25px; margin-top: 10px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            display: none; animation: slideUp 0.8s ease forwards;
         }
-        @keyframes pulse { 0%, 100% {transform: scale(1);} 50% {transform: scale(1.05);} }
+        @keyframes slideUp { from{opacity:0; transform: translateY(30px);} to{opacity:1; transform: translateY(0);} }
+        
+        .ticket::before, .ticket::after {
+            content: ''; position: absolute; width: 40px; height: 40px;
+            background: #0d2e0d; border-radius: 50%; top: 50%; transform: translateY(-50%);
+            border: 1px solid var(--gold);
+        }
+        .ticket::before { left: -25px; } .ticket::after { right: -25px; }
 
-        /* Teks Berjalan */
-        .running { background: var(--green); padding: 12px 0; overflow: hidden; white-space: nowrap; border-top: 2px solid var(--gold); position: relative; z-index: 1000; }
-        .running span { display: inline-block; padding-left: 100%; animation: scroll 20s linear infinite; font-weight: bold; color: var(--gold); }
-        @keyframes scroll { to { transform: translateX(-100%); } }
+        .ticket-header { border-bottom: 1px dashed rgba(255,215,0,0.4); padding-bottom: 15px; margin-bottom: 20px; }
+        .ticket-body { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left; }
+        .label { color: #777; font-size: 10px; letter-spacing: 1px; font-weight: bold; }
+        .value { color: var(--gold); font-size: 14px; font-weight: 800; margin-top: 2px; }
 
-        /* Aksen Lebaran Jatuh */
-        .floating-item { position: fixed; top: -50px; animation: fall linear infinite; z-index: 1; opacity: 0.7; pointer-events: none; }
-        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+        /* Tombol DANA Premium */
+        .dana-btn { 
+            display: block; background: linear-gradient(45deg, var(--gold), #ffecb3); 
+            color: #000; text-decoration: none; padding: 15px; border-radius: 12px; 
+            margin-top: 25px; font-weight: 900; text-align: center; 
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3); transition: 0.3s;
+        }
+        .dana-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(255, 215, 0, 0.4); }
+
+        /* Sembunyikan Konten Saat Zoom */
+        #content-wrapper { transition: 0.5s; }
+        .photo-wrapper.is-zoom + #content-wrapper { opacity: 0; pointer-events: none; transform: scale(0.9); }
+
+        .btn-container{ display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        button{ padding: 14px 28px; border-radius: 15px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        #yesBtn{ background: var(--gold); color: black; }
+        #noBtn{ background: rgba(255,255,255,0.1); color: white; position: relative; }
+
+        .running{ background: var(--green); padding: 15px 0; overflow: hidden; white-space: nowrap; border-top: 1px solid var(--gold); z-index: 100; }
+        .running span{ display: inline-block; animation: scroll 20s linear infinite; color: var(--gold); font-weight: bold; font-size: 14px; }
+        @keyframes scroll{ from{ transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+        .item{ position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.4; z-index: 1; }
+        @keyframes fall{ to { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
-<body>
+<body id="bodyArea">
 
-    <div id="opening">🌙 Klik untuk Aili 🌙</div>
+<div id="opening">
+    <div style="text-align: center;">
+        <h2 style="color: var(--gold); font-size: 35px; letter-spacing: 5px; margin-bottom: 10px;">EID AL-FITR</h2>
+        <p style="font-size: 12px; letter-spacing: 2px; opacity: 0.7;">CLICK TO ENTER</p>
+    </div>
+</div>
 
-    <div class="container" id="mainCon">
-        <div class="card" id="mainCard">
-            <h1 style="color: var(--gold); font-size: 22px; margin-bottom: 10px;">Selamat Lebaran Aili ✨</h1>
-            
-            <div class="photo-wrapper" id="pWrapper">
-                <img src="foto.jpg" class="photo" id="mainPhoto" alt="Aili" onerror="this.src='https://cdn.pixabay.com/photo/2020/03/17/14/08/eid-mubarak-4940561_1280.png'">
+<div class="container" id="containerArea">
+    <div class="card" id="cardArea">
+        <h2 style="color: var(--gold); margin-bottom: 20px; font-size: 24px; letter-spacing: 1px;">Selamat Lebaran Aili ✨</h2>
+        
+        <div class="photo-wrapper" id="pWrapper">
+            <img src="foto.jpg" class="photo" id="mainPhoto" alt="Foto">
+        </div>
+        
+        <div id="content-wrapper">
+            <div id="awal">
+                <p style="font-size: 15px; opacity: 0.9; line-height: 1.6;">Minal Aidin Wal Faizin,<br>mohon maaf lahir dan batin ya.</p>
+                <p style="margin: 25px 0 10px; font-weight: bold; color: var(--gold); font-size: 17px;">Boleh aku mampir? 🥺</p>
+                <div class="btn-container">
+                    <button id="yesBtn">BOLEH! 🙏</button>
+                    <button id="noBtn">NGGAK 😜</button>
+                </div>
             </div>
 
-            <div id="content-awal">
-                <div class="info-box">
-                    <p>🕌 Maaf Lahir & Batin ya!</p>
-                    <p>📅 Sampai ketemu di hari raya!</p>
+            <div id="akhir" class="ticket">
+                <div class="ticket-header">
+                    <p style="font-size: 18px; font-weight: 900; color: var(--gold); letter-spacing: 2px;">VIP THR PASS</p>
+                    <p style="font-size: 10px; color: #fff; margin-top: 5px;">EXCLUSIVE FOR AILI</p>
                 </div>
-                <p style="margin: 10px 0;">Boleh aku mampir ke rumahmu? 🥺</p>
-                <div class="buttons">
-                    <button id="yesBtn">Boleh! 🙏</button>
-                    <button id="noBtn">Nggak 😜</button>
+                <div class="ticket-body">
+                    <div><p class="label">HOLDER</p><p class="value">AILI</p></div>
+                    <div style="text-align: right;"><p class="label">GATE</p><p class="value">HEAVEN A1</p></div>
+                    <div><p class="label">PRIORITY</p><p class="value">ULTRA VIP</p></div>
+                    <div style="text-align: right;"><p class="label">CODE</p><p class="value">EID-2026</p></div>
                 </div>
-            </div>
-
-            <div id="content-akhir" style="display: none;">
-                <h2 style="color: var(--gold); margin: 15px 0;">Yeeayy! 🥳</h2>
-                <p>Siapkan ketupatnya ya! <br> Sebagai tanda terima kasih, ini ada sedikit THR buat kamu:</p>
-                <a href="https://link.dana.id/kaget/xxxxx" target="_blank" class="dana-btn" id="danaBtn">Ambil THR di Sini 🧧</a>
+                <div style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
+                    <p class="label">STATUS</p>
+                    <p class="value" style="font-size: 20px;">VERIFIED ✅</p>
+                </div>
+                <a href="https://link.dana.id/kaget/xxxxx" target="_blank" class="dana-btn">CLAIM YOUR THR 🧧</a>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="running">
-        <span>🌙 Minal Aidin Wal Faizin Aili 🌙 Mohon Maaf Lahir dan Batin 🌙 Cek THR-mu ya! 🌙</span>
-    </div>
+<div class="running">
+    <span>🌙 Minal Aidin Wal Faizin Aili! 🌙 Selamat Lebaran! 🌙 Ditunggu Opor Ayamnya ya! 🌙 Cek Tiket THR Kamu! 🌙</span>
+</div>
 
-    <audio id="mainAudio" src="lebaran.mp3" loop></audio>
+<audio id="mainAudio" src="lebaran.mp3" loop></audio>
 
 <script>
-    const photo = document.getElementById("mainPhoto");
-    const pWrapper = document.getElementById("pWrapper");
-    const opening = document.getElementById("opening");
-    const mainAudio = document.getElementById("mainAudio");
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const overlay = document.getElementById("dismiss-overlay");
-    const contentAwal = document.getElementById("content-awal");
-    const contentAkhir = document.getElementById("content-akhir");
-    const danaBtn = document.getElementById("danaBtn");
+    const opening = document.getElementById('opening');
+    const audio = document.getElementById('mainAudio');
+    const pWrapper = document.getElementById('pWrapper');
+    const photo = document.getElementById('mainPhoto');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const awal = document.getElementById('awal');
+    const akhir = document.getElementById('akhir');
+    const containerArea = document.getElementById('containerArea');
 
-    // Efek Transisi Foto Klik (Smooth)
-    photo.onclick = () => {
-        pWrapper.classList.toggle("is-portrait");
+    // Masuk & Putar Musik
+    opening.onclick = (e) => {
+        e.stopPropagation();
+        opening.classList.add('fade-out');
+        audio.play().catch(e => console.log("Audio play error"));
     };
 
-    // Musik Jalan & Overlay Hilang
-    opening.onclick = () => {
-        opening.classList.add("fade-out");
-        mainAudio.play().catch(e => console.log("Musik tidak diizinkan putar"));
+    // --- DISMISS SYSTEM PRO ---
+    // Klik foto untuk Zoom/Unzoom
+    photo.onclick = (e) => {
+        e.stopPropagation();
+        pWrapper.classList.toggle('is-zoom');
+    };
+
+    // Klik dimana saja di luar foto untuk Unzoom (Dismiss)
+    window.onclick = () => {
+        if (pWrapper.classList.contains('is-zoom')) {
+            pWrapper.classList.remove('is-zoom');
+        }
     };
 
     // Tombol No Kabur
     noBtn.onmouseover = () => {
-        noBtn.style.position = "fixed";
-        noBtn.style.left = Math.random() * 80 + "vw";
-        noBtn.style.top = Math.random() * 80 + "vh";
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = Math.random() * 80 + 'vw';
+        noBtn.style.top = Math.random() * 80 + 'vh';
+        noBtn.style.zIndex = '9999';
     };
 
-    // Klik Yes (Muncul THR)
-    yesBtn.onclick = () => {
-        // Efek transisi halus antar konten
-        contentAwal.style.opacity = "0";
-        setTimeout(() => {
-            contentAwal.style.display = "none";
-            contentAkhir.style.display = "block";
-            danaBtn.style.display = "block";
-            // Kembang api item jatuh saat sukses
-            for(let i=0; i<10; i++){ setTimeout(createItems, i * 150); }
-        }, 300);
+    // Tombol Boleh (Pindah ke Tiket & Hapus Foto)
+    yesBtn.onclick = (e) => {
+        e.stopPropagation();
+        pWrapper.style.display = 'none'; // Foto Dihapus Total
+        awal.style.display = 'none';
+        akhir.style.display = 'block';
     };
 
-    // Fungsi Item Lebaran Jatuh
-    function createItems() {
-        const icons = ['🌙','⭐','🧧','🕌','🫔'];
+    // Efek Animasi Melayang
+    function createIcon() {
+        const items = ['🌙','⭐','🧧','✨'];
         const div = document.createElement('div');
-        div.className = 'floating-item';
-        div.innerHTML = icons[Math.floor(Math.random()*icons.length)];
+        div.className = 'item';
+        div.innerHTML = items[Math.floor(Math.random()*items.length)];
         div.style.left = Math.random() * 100 + 'vw';
-        div.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        div.style.fontSize = Math.random() * 20 + 15 + 'px';
+        div.style.animationDuration = (Math.random() * 2 + 3) + 's';
         document.body.appendChild(div);
-        setTimeout(() => div.remove(), 6000);
+        setTimeout(() => div.remove(), 5000);
     }
-    setInterval(createItems, 700);
+    setInterval(createIcon, 500);
 </script>
 </body>
 </html>
