@@ -235,7 +235,7 @@
 
 
 
-<audio id="mainAudio" preload="auto" playsinline loop>
+<audio id="mainAudio" preload="auto" playsinline>
     <source src="lebaran.mp3" type="audio/mpeg">
 </audio>
 
@@ -252,12 +252,6 @@ const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
-
-audio.loop = true;
-audio.addEventListener('ended', () => {
-    audio.currentTime = 0;
-    audio.play();
-});
 
 function startApp() {
     opening.classList.add('fade-out');
