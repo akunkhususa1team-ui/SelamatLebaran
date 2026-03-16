@@ -285,35 +285,6 @@ function startApp() {
 opening.addEventListener('click', startApp);
 opening.addEventListener('touchstart', startApp);
 
-function startApp() {
-    // 1. Sembunyikan overlay
-    opening.classList.add('fade-out');
-
-    // 2. Unmute secara eksplisit (PENTING untuk Mobile)
-    audio.muted = false;
-
-    // 3. Eksekusi Play dengan Promise Handling
-    const playPromise = audio.play();
-
-    if (playPromise !== undefined) {
-        playPromise.then(() => {
-            console.log("Audio berhasil diputar! 🎶");
-        }).catch(error => {
-            console.log("Autoplay dicegah, menunggu interaksi tambahan...");
-            
-            // Backup Plan: Jika gagal, pancing dengan event touch manapun
-            const unlockAudio = () => {
-                audio.muted = false;
-                audio.play();
-                document.removeEventListener('touchstart', unlockAudio);
-                document.removeEventListener('click', unlockAudio);
-            };
-            document.addEventListener('touchstart', unlockAudio);
-            document.addEventListener('click', unlockAudio);
-        });
-    }
-}
-
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
         const count = isFirework ? 20 : 12;
