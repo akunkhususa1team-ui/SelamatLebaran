@@ -37,6 +37,21 @@
             border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 25px 50px rgba(0,0,0,0.8);
             transition: 0.1s; position: 50%;
         }
+
+        .top-banner-ornament {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1;
+        line-height: 0;
+        }
+
+        .top-banner-ornament img {
+              width: 100%;
+              height: auto;
+              display: block;
+        }
     
     
           /* Photo Styles */
@@ -206,7 +221,10 @@
 <div id="dismiss-overlay" style="position:fixed; inset:0; display:none; z-index:50;"></div>
 
   
-
+  <div class="top-banner-ornament" id="topOrnament">
+            <img src="ketupatfix_6055265.png" alt="Ketupat Ornament">
+        </div>
+    
   <div class="container">
     <div class="card" id="cardArea">
         <div id="header-text">
