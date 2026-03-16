@@ -26,6 +26,8 @@
         }
 
         /* --- Overlay Awal --- */
+        
+    
         #opening { position: fixed; inset: 0; background: #000; display: grid; place-items: center; z-index: 9999; cursor: pointer; transition: 1s ease; }
         .fade-out { opacity: 0; pointer-events: none; transform: scale(1.2); }
 
@@ -301,6 +303,7 @@ const lagu1 = "lebaran.mp3";
 
 opening.onclick = () => {
         opening.classList.add("fade-out");
+        if (event) event.stopPropagation();
         mainAudio.src = lagu1;
         mainAudio.loop = true;
         mainAudio.play().catch(e => console.log("Playback error:", e));
@@ -346,7 +349,6 @@ function createSparks(x, y, isFirework = false) {
     }
 
     function escapeBtn() {
-    if (event) event.stopPropagation();
     const btn = document.getElementById('noBtn');
     
     // Memberikan efek haptic (getaran) pendek untuk pengguna HP (jika didukung)
