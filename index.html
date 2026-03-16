@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -243,7 +244,7 @@
                 <p style="margin-top: 20px; font-weight: 800; color: var(--gold); font-size: 16px;">Boleh aku mampir ke rumah? 🥺</p>
                 <div class="btn-container">
                     <button id="yesBtn" onclick="showTicket()">BOLEH! 🙏</button>
-                    <button id="noBtn" >NGGAK 😜</button>
+                    <button id="noBtn" onmouseover="escapeBtn()" onclick="escapeBtn()">NGGAK 😜</button>
                 
                 </div>
             </div>
@@ -297,19 +298,30 @@ const yesBtn = document.getElementById('yesBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
 
-const lagu1 = "lebaran.mp3";
-
 function startApp() {
     const opening = document.getElementById('opening');
     const audio = document.getElementById('mainAudio'); // Pastiin manggil ID yang bener
-    
+    const lagu1 = "lebaran.mp3";
 
-    opening.onclick = () => {
-        opening.classList.add("fade-out");
-        mainAudio.src = lagu1;
-        mainAudio.loop = true;
-        mainAudio.play().catch(e => console.log("Playback error:", e));
-    };
+    // 1. Ilangin overlay
+    opening.classList.add("fade-out");
+
+    // 2. Set lagu & langsung puter
+    audio.src = lagu1;
+    audio.loop = true;
+    
+    // Ini trik biar iPhone kaga rewel: pancing pake play() di dalem click event
+    audio.play().then(() => {
+        console.log("Mantap, lagu jalan!");
+    }).catch(e => {
+        console.log("Audio diblokir browser:", e);
+    });
+
+    // Buang element opening dari layar biar kaga ngalangin klik laen
+    setTimeout(() => {
+        opening.style.display = 'none';
+    }, 1000);
+}
 
 
 function createSparks(x, y, isFirework = false) {
@@ -351,22 +363,31 @@ function createSparks(x, y, isFirework = false) {
     }
 
     function escapeBtn() {
-     noBtn.style.position = "fixed";
-        const btnW = noBtn.offsetWidth;
-        const btnH = noBtn.offsetHeight;
-        const maxX = window.innerWidth - btnW - 20;
-        const maxY = window.innerHeight - 130;
-        
-        let nX = Math.random() * maxX;
-        let nY = Math.random() * maxY;
-
-        noBtn.style.left = nX + "px";
-        noBtn.style.top = nY + "px";
-        noBtn.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+    const btn = document.getElementById('noBtn');
+    
+    // Memberikan efek haptic (getaran) pendek untuk pengguna HP (jika didukung)
+    if (navigator.vibrate) {
+        navigator.vibrate(40);
     }
 
-    noBtn.addEventListener("mouseover", escapeBtn);
-    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); escapeBtn(); });
+    // Menghitung batas maksimal layar agar tombol tidak lari keluar jendela browser
+    // Kita beri margin 20px agar tidak terlalu mepet ke pinggir layar
+    const maxX = window.innerWidth - btn.offsetWidth - 20;
+    const maxY = window.innerHeight - btn.offsetHeight - 20;
+
+    // Menghasilkan koordinat acak
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+
+    // Mengubah posisi tombol menjadi fixed agar bisa pindah ke mana saja di layar
+    btn.style.position = 'fixed';
+    btn.style.left = randomX + 'px';
+    btn.style.top = randomY + 'px';
+    btn.style.zIndex = '9999'; // Memastikan tombol selalu di paling depan saat lari
+
+    // Tambahkan animasi kecil agar perpindahannya terlihat halus
+    btn.style.transition = 'all 0.1s ease';
+}
 
     function backHome() {
     const card = document.getElementById('cardArea');
