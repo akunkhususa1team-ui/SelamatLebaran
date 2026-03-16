@@ -346,6 +346,7 @@ function createSparks(x, y, isFirework = false) {
     }
 
     function escapeBtn() {
+    if (event) event.stopPropagation();
     const btn = document.getElementById('noBtn');
     
     // Memberikan efek haptic (getaran) pendek untuk pengguna HP (jika didukung)
