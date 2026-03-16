@@ -81,31 +81,9 @@
         }
       
 
-        /* Gaya Container Running Text */
-.running { 
-    background: rgba(0,0,0,0.4); 
-    padding: 12px 0; 
-    white-space: nowrap; 
-    border-top: 1px solid rgba(255,215,0,0.2); 
-    backdrop-filter: blur(10px);
-    overflow: hidden; /* Memastikan teks tidak meluber keluar */
-    width: 100%;
-}
-
-.running span { 
-    display: inline-block; 
-    padding-left: 1%; /* Diubah dari 100% agar tidak menunggu terlalu lama */
-    animation: scroll 0,25s linear infinite; 
-    color: var(--gold); 
-    font-weight: 600; 
-    font-size: 13px; 
-}
-
-/* Animasi yang lebih efisien */
-@keyframes scroll { 
-    from { transform: translateX(0%); } 
-    to { transform: translateX(-100%); } 
-}
+.running { background: var(--pink); padding: 12px 0; overflow: hidden; white-space: nowrap; flex-shrink: 0; position: relative; z-index: 100; }
+        .running span { display: inline-block; padding-left: 100%; animation: scroll 20s linear infinite; font-weight: bold; }
+        @keyframes scroll { to { transform: translateX(-100%); } }
         
         .heart-rain { position: fixed; top: -20px; animation: fall linear forwards; pointer-events: none; z-index: 5; }
         @keyframes fall { to { transform: translateY(110vh); opacity: 0; } }
