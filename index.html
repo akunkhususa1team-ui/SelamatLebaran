@@ -347,11 +347,29 @@ function createSparks(x, y, isFirework = false) {
     }
 
     function escapeBtn() {
-        const btn = document.getElementById('noBtn');
-        btn.style.position = 'fixed';
-        btn.style.left = Math.random() * 70 + 15 + 'vw';
-        btn.style.top = Math.random() * 70 + 15 + 'vh';
+    const btn = document.getElementById('noBtn');
+    
+    // Tambahkan efek getar (Haptic Feedback) jika didukung browser
+    if (window.navigator.vibrate) {
+        window.navigator.vibrate(50);
     }
+
+    // Hitung posisi acak agar tidak keluar layar HP
+    const maxX = window.innerWidth - btn.offsetWidth - 20;
+    const maxY = window.innerHeight - btn.offsetHeight - 20;
+    
+    const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+    const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+    btn.style.position = 'fixed';
+    btn.style.left = randomX + 'px';
+    btn.style.top = randomY + 'px';
+    btn.style.zIndex = '9999';
+    
+    // Tambahkan sedikit skala kecil saat diklik agar terasa ada feedback
+    btn.style.transform = 'scale(0.9)';
+    setTimeout(() => btn.style.transform = 'scale(1)', 100);
+}
 
     function backHome() {
     const card = document.getElementById('cardArea');
