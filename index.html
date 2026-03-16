@@ -113,6 +113,40 @@
             transition: 0.3s;
         }
 
+.back-btn{
+    margin-top:15px;
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    font-weight:800;
+    cursor:pointer;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    transition:0.4s;
+    backdrop-filter:blur(10px);
+}
+
+.back-btn:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,0.15);
+}
+
+.fade-page{
+    animation:fadePage .6s ease;
+}
+
+@keyframes fadePage{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
       .photo-wrapper.is-zoom + #content-wrapper {
             opacity: 0;
             pointer-events: none;
@@ -192,6 +226,7 @@
                 <div class="claim-wrapper">
                     <a href="https://link.dana.id/kaget/xxxxx" target="_blank" class="dana-btn">CLAIM YOUR THR 🧧</a>
                     <p style="font-size: 8px; margin-top: 15px; opacity: 0.4; letter-spacing: 1px;">*TICKET VALID FOR 1 SYAWAL ONLY</p>
+                    <button onclick="backHome()" class="back-btn">⬅ Back to Home</button>
                 </div>
             </div>
         </div>
@@ -289,6 +324,21 @@ function createSparks(x, y, isFirework = false) {
         btn.style.left = Math.random() * 70 + 15 + 'vw';
         btn.style.top = Math.random() * 70 + 15 + 'vh';
     }
+
+    function backHome() {
+    const card = document.getElementById('cardArea');
+
+    card.classList.remove('fade-page');
+    void card.offsetWidth;
+    card.classList.add('fade-page');
+
+    document.getElementById('akhir').style.display = 'none';
+    document.getElementById('awal').style.display = 'block';
+    pWrapper.style.display = 'block';
+
+    document.getElementById('header-text').innerHTML =
+        '<h2 style="color: var(--gold); margin-bottom: 20px; font-size: 22px; font-weight: 800;">Selamat Lebaran Aili ✨</h2>';
+}
 
     // Background Elements
     setInterval(() => {
