@@ -294,7 +294,6 @@ const photo = document.getElementById('mainPhoto');
 const overlay = document.getElementById("dismiss-overlay");
 
 const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
 
@@ -349,26 +348,28 @@ function createSparks(x, y, isFirework = false) {
     function escapeBtn() {
     const btn = document.getElementById('noBtn');
     
-    // Tambahkan efek getar (Haptic Feedback) jika didukung browser
-    if (window.navigator.vibrate) {
-        window.navigator.vibrate(50);
+    // Memberikan efek haptic (getaran) pendek untuk pengguna HP (jika didukung)
+    if (navigator.vibrate) {
+        navigator.vibrate(40);
     }
 
-    // Hitung posisi acak agar tidak keluar layar HP
+    // Menghitung batas maksimal layar agar tombol tidak lari keluar jendela browser
+    // Kita beri margin 20px agar tidak terlalu mepet ke pinggir layar
     const maxX = window.innerWidth - btn.offsetWidth - 20;
     const maxY = window.innerHeight - btn.offsetHeight - 20;
-    
-    const randomX = Math.max(10, Math.floor(Math.random() * maxX));
-    const randomY = Math.max(10, Math.floor(Math.random() * maxY));
 
+    // Menghasilkan koordinat acak
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+
+    // Mengubah posisi tombol menjadi fixed agar bisa pindah ke mana saja di layar
     btn.style.position = 'fixed';
     btn.style.left = randomX + 'px';
     btn.style.top = randomY + 'px';
-    btn.style.zIndex = '9999';
-    
-    // Tambahkan sedikit skala kecil saat diklik agar terasa ada feedback
-    btn.style.transform = 'scale(0.9)';
-    setTimeout(() => btn.style.transform = 'scale(1)', 100);
+    btn.style.zIndex = '9999'; // Memastikan tombol selalu di paling depan saat lari
+
+    // Tambahkan animasi kecil agar perpindahannya terlihat halus
+    btn.style.transition = 'all 0.1s ease';
 }
 
     function backHome() {
