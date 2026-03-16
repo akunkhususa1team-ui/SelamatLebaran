@@ -235,7 +235,7 @@
 
 
 
-<audio id="mainAudio" preload="auto" playsinline loop>
+<audio id="mainAudio" loop playsinline muted>
     <source src="lebaran.mp3" type="audio/mpeg">
 </audio>
 
@@ -256,29 +256,26 @@ audio.loop = true;
 audio.volume = 1;
 
 function startApp() {
-    // 1. Hilangkan overlay opening
+    const audio = document.getElementById('mainAudio');
+    const opening = document.getElementById('opening');
+
+    // 1. Jalankan animasi visual
     opening.classList.add('fade-out');
-    
-    // 2. Wajib: Unmute dulu karena banyak browser mobile memblokir audio bersuara
-    audio.muted = false;
 
-    // 3. Jalankan audio
-    const playPromise = audio.play();
-
-    if (playPromise !== undefined) {
-        playPromise.then(() => {
-            console.log("Audio jalan di Mobile! ✅");
-        }).catch(error => {
-            console.log("Autoplay diblokir, menjalankan fallback...");
-            // Fallback: Jika gagal, paksa jalan saat user menyentuh layar manapun
-            const force = () => {
-                audio.muted = false;
-                audio.play();
-                window.removeEventListener('touchstart', force);
-            };
-            window.addEventListener('touchstart', force);
-        });
-    }
+    // 2. Teknik "Unlock" Audio untuk Mobile
+    audio.muted = false; // Unmute
+    audio.play().then(() => {
+        console.log("Berhasil diputar");
+    }).catch(err => {
+        console.log("Gagal, mencoba fallback...");
+        // Jika gagal (biasanya di iPhone), paksa saat sentuhan pertama di layar manapun
+        const pancingAudio = () => {
+            audio.muted = false;
+            audio.play();
+            document.removeEventListener('touchstart', pancingAudio);
+        };
+        document.addEventListener('touchstart', pancingAudio);
+    });
 }
 
 // Pastikan event listener dipasang ke opening
