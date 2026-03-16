@@ -235,9 +235,7 @@
 
 
 
-<audio id="mainAudio" loop playsinline muted>
-    <source src="lebaran.mp3" type="audio/mpeg">
-</audio>
+<audio id="mainAudio" preload="auto"></audio>
 
 <script>
 const opening = document.getElementById('opening');
@@ -251,36 +249,15 @@ const noBtn = document.getElementById('noBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
 
-// Setting awal audio
-audio.loop = true;
-audio.volume = 1;
+const lagu1 = "lebaran.mp3";
 
-function startApp() {
-    const audio = document.getElementById('mainAudio');
-    const opening = document.getElementById('opening');
+opening.onclick = () => {
+        opening.classList.add("fade-out");
+        mainAudio.src = lagu1;
+        mainAudio.loop = true;
+        mainAudio.play().catch(e => console.log("Playback error:", e));
+    };
 
-    // 1. Jalankan animasi visual
-    opening.classList.add('fade-out');
-
-    // 2. Teknik "Unlock" Audio untuk Mobile
-    audio.muted = false; // Unmute
-    audio.play().then(() => {
-        console.log("Berhasil diputar");
-    }).catch(err => {
-        console.log("Gagal, mencoba fallback...");
-        // Jika gagal (biasanya di iPhone), paksa saat sentuhan pertama di layar manapun
-        const pancingAudio = () => {
-            audio.muted = false;
-            audio.play();
-            document.removeEventListener('touchstart', pancingAudio);
-        };
-        document.addEventListener('touchstart', pancingAudio);
-    });
-}
-
-// Pastikan event listener dipasang ke opening
-opening.addEventListener('click', startApp);
-opening.addEventListener('touchstart', startApp);
 
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
