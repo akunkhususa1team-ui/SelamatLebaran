@@ -244,44 +244,75 @@ const opening = document.getElementById('opening');
 const audio = document.getElementById('mainAudio');
 const pWrapper = document.getElementById('pWrapper');
 const photo = document.getElementById('mainPhoto');
-const zoomOverlay = document.getElementById('zoomOverlay');
 const overlay = document.getElementById("dismiss-overlay");
-const appWrapper = document.getElementById("app-wrapper");
 
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
 
+// Setting awal audio
 audio.loop = true;
 audio.volume = 1;
 
-function forcePlay() {
-    audio.play().catch(err => {
-        console.log("Audio blocked:", err);
-    });
-}
-
 function startApp() {
+    // 1. Hilangkan overlay opening
     opening.classList.add('fade-out');
     
-    // Pastikan audio tidak termute
+    // 2. Wajib: Unmute dulu karena banyak browser mobile memblokir audio bersuara
     audio.muted = false;
-    
-    // Langsung panggil play
-    audio.play();
 
-    // Tambahan untuk menjamin di perangkat yang sangat ketat
-    const forcePlay = () => {
-        audio.play();
-        document.removeEventListener('touchstart', forcePlay);
-        document.removeEventListener('click', forcePlay);
-    };
-    
-    document.addEventListener('touchstart', forcePlay);
-    document.addEventListener('click', forcePlay);
+    // 3. Jalankan audio
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            console.log("Audio jalan di Mobile! ✅");
+        }).catch(error => {
+            console.log("Autoplay diblokir, menjalankan fallback...");
+            // Fallback: Jika gagal, paksa jalan saat user menyentuh layar manapun
+            const force = () => {
+                audio.muted = false;
+                audio.play();
+                window.removeEventListener('touchstart', force);
+            };
+            window.addEventListener('touchstart', force);
+        });
+    }
 }
 
+// Pastikan event listener dipasang ke opening
+opening.addEventListener('click', startApp);
+opening.addEventListener('touchstart', startApp);
+
+function startApp() {
+    // 1. Sembunyikan overlay
+    opening.classList.add('fade-out');
+
+    // 2. Unmute secara eksplisit (PENTING untuk Mobile)
+    audio.muted = false;
+
+    // 3. Eksekusi Play dengan Promise Handling
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            console.log("Audio berhasil diputar! 🎶");
+        }).catch(error => {
+            console.log("Autoplay dicegah, menunggu interaksi tambahan...");
+            
+            // Backup Plan: Jika gagal, pancing dengan event touch manapun
+            const unlockAudio = () => {
+                audio.muted = false;
+                audio.play();
+                document.removeEventListener('touchstart', unlockAudio);
+                document.removeEventListener('click', unlockAudio);
+            };
+            document.addEventListener('touchstart', unlockAudio);
+            document.addEventListener('click', unlockAudio);
+        });
+    }
+}
 
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
