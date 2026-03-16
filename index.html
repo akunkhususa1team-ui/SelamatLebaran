@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Lebaran VIP Aili 🌙</title>
     <link href="https://fonts.googleapis.com/css2?family='Segoe UI':wght@700&family=Roboto, sans-serif:wght@400;800&display=swap" rel="stylesheet">
     <style>
@@ -71,7 +72,23 @@
 
         .balloon { position: fixed; bottom: -50px; z-index: 1; pointer-events: none; }
 
-        /* --- TIKET VIP DEWA VERSION --- */
+      /* Gaya untuk Ornamen Ketupat di dalam Tiket */
+.ticket-ornament {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.2); /* Garis pembatas tipis emas */
+}
+
+.ticket-ornament img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    /* Memberikan efek transisi halus agar masuk tiket lebih cantik */
+    filter: brightness(0.9) contrast(1.1); 
+}  
+      
+      /* --- TIKET VIP DEWA VERSION --- */
         .ticket {
             background: linear-gradient(135deg, #111 0%, #222 100%);
             border: 1px solid rgba(255, 215, 0, 0.3); border-radius: 25px;
@@ -176,16 +193,21 @@
 <body>
 
 <div id="opening" onclick="startApp()">
-    <div style="text-align: center;">
-        <h1 style="font-family: 'Syncopate'; color: var(--gold); font-size: 30px; letter-spacing: 8px; margin-bottom: 15px;">EID AL-FITR</h1>
-        <div style="width: 50px; height: 2px; background: var(--gold); margin: 0 auto 15px;"></div>
-        <p style="font-size: 11px; letter-spacing: 4px; opacity: 0.6;">CLICK TO UNLOCK EXPERIENCE</p>
+
+  <div id="opening">
+    <div onclick="startApp()" style="text-align:center;">
+        <h1 style="color:var(--gold)">EID AL-FITR</h1>
+        <p style="font-size:12px">CLICK TO UNLOCK EXPERIENCE</p>
     </div>
+</div>
+  
 </div>
 
 <div id="dismiss-overlay" style="position:fixed; inset:0; display:none; z-index:50;"></div>
 
-<div class="container">
+  
+
+  <div class="container">
     <div class="card" id="cardArea">
         <div id="header-text">
             <h2 style="color: var(--gold); margin-bottom: 20px; font-size: 22px; font-weight: 800;">Selamat Lebaran Aili ✨</h2>
@@ -198,9 +220,7 @@
         <div id="content-main">
             <div id="awal">
                 <p style="font-size: 15px; opacity: 0.9; line-height: 1.8; font-weight: 400;">
-    "Untuk setiap kata yang tak sengaja menyakiti,<br>
-    dan setiap janji yang belum sempat ditepati.<br>
-    Minal Aidin Wal Faizin, mohon maaf lahir batin ya."
+    "Minal Aidin Wal Faizin, mohon maaf lahir batin ya."
 </p>
                 <p style="margin-top: 20px; font-weight: 800; color: var(--gold); font-size: 16px;">Boleh aku mampir ke rumah? 🥺</p>
                 <div class="btn-container">
@@ -209,12 +229,14 @@
                 
                 </div>
             </div>
+          
           <br>
           <div class="running">
     <span> 🌙 MINAL AIDIN WAL FAIZIN AILI! • SELAMAT LEBARAN! • DITUNGGU OPOR AYAMNYA YA! • CEK TIKET THR KAMU SEKARANG! • 🌙 </span>
 </div>
           
-            <div id="akhir" class="ticket">
+             
+          <div id="akhir" class="ticket">
                 <div class="ticket-inner">
                     <div class="ticket-header">
                         <h3>VIP PASS</h3>
@@ -344,3 +366,11 @@ function createSparks(x, y, isFirework = false) {
   
 </body>
 </html>
+
+</style>
+</head>
+
+<body>
+
+
+
