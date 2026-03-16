@@ -235,7 +235,7 @@
 
 
 
-<audio id="mainAudio" preload="auto" playsinline webkit-playsinline loop>
+<audio id="mainAudio" preload="auto" playsinline loop>
     <source src="lebaran.mp3" type="audio/mpeg">
 </audio>
 
@@ -264,21 +264,23 @@ function forcePlay() {
 
 function startApp() {
     opening.classList.add('fade-out');
-
+    
+    // Pastikan audio tidak termute
     audio.muted = false;
+    
+    // Langsung panggil play
+    audio.play();
 
-    audio.play()
-        .then(() => {
-            console.log("audio playing ✅");
-        })
-        .catch(() => {
-            document.addEventListener('click', forcePlay, { once: true });
-            document.addEventListener('touchstart', forcePlay, { once: true });
-        });
+    // Tambahan untuk menjamin di perangkat yang sangat ketat
+    const forcePlay = () => {
+        audio.play();
+        document.removeEventListener('touchstart', forcePlay);
+        document.removeEventListener('click', forcePlay);
+    };
+    
+    document.addEventListener('touchstart', forcePlay);
+    document.addEventListener('click', forcePlay);
 }
-
-opening.addEventListener('click', startApp);
-opening.addEventListener('touchstart', startApp);
 
 
 function createSparks(x, y, isFirework = false) {
