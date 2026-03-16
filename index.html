@@ -210,8 +210,6 @@
 <body>
 
 <div id="opening" onclick="startApp()">
-
-  <div id="opening">
     <div onclick="startApp()" style="text-align:center;">
         <h1 style="color:var(--gold)">EID AL-FITR</h1>
         <p style="font-size:12px">CLICK TO UNLOCK EXPERIENCE</p>
@@ -299,15 +297,30 @@ const yesBtn = document.getElementById('yesBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
 
-const lagu1 = "lebaran.mp3";
+function startApp() {
+    const opening = document.getElementById('opening');
+    const audio = document.getElementById('mainAudio'); // Pastiin manggil ID yang bener
+    const lagu1 = "lebaran.mp3";
 
-opening.onclick = () => {
-        opening.classList.add("fade-out");
-        if (event) event.stopPropagation();
-        mainAudio.src = lagu1;
-        mainAudio.loop = true;
-        mainAudio.play().catch(e => console.log("Playback error:", e));
-    };
+    // 1. Ilangin overlay
+    opening.classList.add("fade-out");
+
+    // 2. Set lagu & langsung puter
+    audio.src = lagu1;
+    audio.loop = true;
+    
+    // Ini trik biar iPhone kaga rewel: pancing pake play() di dalem click event
+    audio.play().then(() => {
+        console.log("Mantap, lagu jalan!");
+    }).catch(e => {
+        console.log("Audio diblokir browser:", e);
+    });
+
+    // Buang element opening dari layar biar kaga ngalangin klik laen
+    setTimeout(() => {
+        opening.style.display = 'none';
+    }, 1000);
+}
 
 
 function createSparks(x, y, isFirework = false) {
