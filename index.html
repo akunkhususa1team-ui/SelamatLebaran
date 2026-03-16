@@ -200,7 +200,9 @@
 
 
 
-<audio id="mainAudio" src="lebaran.mp3" loop></audio>
+<audio id="mainAudio" preload="auto" playsinline>
+    <source src="lebaran.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 const opening = document.getElementById('opening');
@@ -216,12 +218,32 @@ const noBtn = document.getElementById('noBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
 
-/* Opening */
-opening.onclick = (e) => {
-    e.stopPropagation();
+function startApp() {
     opening.classList.add('fade-out');
-    audio.play().catch(()=>{});
-};
+
+    audio.muted = false;
+    audio.volume = 1;
+
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+        playPromise
+            .then(() => {
+                console.log("audio playing");
+            })
+            .catch(() => {
+                document.addEventListener('touchstart', forcePlay, { once:true });
+                document.addEventListener('click', forcePlay, { once:true });
+            });
+    }
+}
+
+function forcePlay() {
+    audio.play();
+}
+
+opening.addEventListener('click', startApp);
+opening.addEventListener('touchstart', startApp);
 
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
