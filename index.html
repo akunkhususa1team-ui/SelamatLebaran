@@ -245,7 +245,7 @@
                 <p style="margin-top: 20px; font-weight: 800; color: var(--gold); font-size: 16px;">Di Maapin kan aku 🥺</p>
                 <div class="btn-container">
                     <button id="yesBtn" onclick="showTicket()">BOLEH! 🙏</button>
-                    <button id="noBtn" onmouseover="escapeBtn()" onclick="escapeBtn()">NGGAK 😜</button>
+                    <button id="noBtn" onmouseenter="escapeBtn(event)" onmousedown="escapeBtn(event)" ontouchstart="escapeBtn(event)">NGGAK 😜</button>
                 
                 </div>
             </div>
@@ -365,31 +365,28 @@ function createSparks(x, y, isFirework = false) {
         document.getElementById('header-text').innerHTML = '<h2 style="color: var(--gold); margin-bottom: 10px; font-size: 18px;">Alhamdulillah! See You!</h2>';
     }
 
-    function escapeBtn() {
+    function escapeBtn(event) {
+    event.preventDefault();
+
     const btn = document.getElementById('noBtn');
-    
-    // Memberikan efek haptic (getaran) pendek untuk pengguna HP (jika didukung)
-    if (navigator.vibrate) {
-        navigator.vibrate(40);
+
+    if (!btn.classList.contains('fixed-ready')) {
+        btn.style.position = 'fixed';
+        btn.classList.add('fixed-ready');
     }
 
-    // Menghitung batas maksimal layar agar tombol tidak lari keluar jendela browser
-    // Kita beri margin 20px agar tidak terlalu mepet ke pinggir layar
     const maxX = window.innerWidth - btn.offsetWidth - 20;
     const maxY = window.innerHeight - btn.offsetHeight - 20;
 
-    // Menghasilkan koordinat acak
     const randomX = Math.floor(Math.random() * maxX);
     const randomY = Math.floor(Math.random() * maxY);
 
-    // Mengubah posisi tombol menjadi fixed agar bisa pindah ke mana saja di layar
-    btn.style.position = 'fixed';
     btn.style.left = randomX + 'px';
     btn.style.top = randomY + 'px';
-    btn.style.zIndex = '9999'; // Memastikan tombol selalu di paling depan saat lari
+    btn.style.zIndex = '9999';
+    btn.style.transition = 'all 0.12s ease';
 
-    // Tambahkan animasi kecil agar perpindahannya terlihat halus
-    btn.style.transition = 'all 0.1s ease';
+    if (navigator.vibrate) navigator.vibrate(30);
 }
 
     function backHome() {
