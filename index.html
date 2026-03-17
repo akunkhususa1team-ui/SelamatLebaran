@@ -418,6 +418,21 @@ function createSparks(x, y, isFirework = false) {
         document.body.appendChild(div);
         setTimeout(() => div.remove(), 5000);
     }, 400);
+
+    function autoRunningSpeed() {
+    const runningText = document.querySelector('.running span');
+
+    if (window.innerWidth <= 375) {
+        runningText.style.animationDuration = '16s'; // iPhone SE
+    } else if (window.innerWidth <= 430) {
+        runningText.style.animationDuration = '14s'; // HP normal
+    } else {
+        runningText.style.animationDuration = '12s'; // layar besar
+    }
+}
+
+autoRunningSpeed();
+window.addEventListener('resize', autoRunningSpeed);
 </script>
   
 </body>
