@@ -79,20 +79,16 @@
             0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
             100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.6); opacity: 0; }
         }
-    .quote-box{
-    margin:18px auto;
-    padding:14px 16px;
-    font-size:13px;
+    .quote-text{
+    font-size:12px;
     line-height:1.7;
-    font-weight:500;
-    color:#fff;
-    background:rgba(255,255,255,0.05);
-    border-left:3px solid var(--gold);
-    border-radius:12px;
-    backdrop-filter:blur(8px);
-    box-shadow:0 0 15px rgba(255,215,0,0.15);
-    max-width:90%;
+    font-weight:400;
+    color:rgba(255,255,255,0.92);
     text-align:center;
+    font-style:italic;
+    text-shadow:0 0 8px rgba(255,215,0,0.12);
+    margin-top:12px;
+    margin-bottom:10px;
 }
       
 
@@ -270,9 +266,7 @@
         
         <div id="content-main">
             <div id="awal">
-                <div class="quote-box">
-                    " لِتَعَارَفُوا " Semoga Ramadan ini caraku mengenalmu menjadi ibadah yang diridhai-Nya.
-                </div>
+                <p class="quote-text">" لِتَعَارَفُوا " Semoga Ramadan ini caraku mengenalmu menjadi ibadah yang diridhai-Nya.</p>
                 <p style="margin-top: 20px; font-weight: 800; color: var(--gold); font-size: 16px;">MAAPIN AKU NGGAK 🥺</p>
                 <div class="btn-container">
                     <button id="yesBtn" onclick="showTicket()">BOLEH! 🙏</button>
