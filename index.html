@@ -315,8 +315,8 @@
         
         <div class="photo-wrapper" id="pWrapper">
             <div class="slider" id="slider">
-                <img src="foto1.jpg" class="photo slide active" alt="foto.jpg">
-                <img src="foto2.jpg" class="photo slide" alt="fotoya.jpg">
+                <img src="foto.jpg" class="photo slide active" alt="foto.jpg">
+                <img src="Fotoya.jpg" class="photo slide" alt="Fotoya.jpg">
     </div>
 
     <div class="dots" id="dots"></div>
@@ -378,12 +378,12 @@ AMBIL THR KAMU SEKARANG!&nbsp;•&nbsp;BUAT JAJAN YANG PEDES-PEDES 🥵🌶️�
 
 
 
-<audio id="mainAudio" preload="auto"></audio>
+<audio id="mainAudio" preload="auto" playsinline></audio>
 
-<script>
-const opening = document.getElementById('opening');
-const audio = document.getElementById('mainAudio');
+<script>;
 const pWrapper = document.getElementById('pWrapper');
+
+
 
 const overlay = document.getElementById("dismiss-overlay");
 
@@ -396,26 +396,28 @@ function startApp() {
     const audio = document.getElementById('mainAudio'); // Pastiin manggil ID yang bener
     const lagu1 = "lebaran.mp3";
 
-    // 1. Ilangin overlay
-    opening.classList.add("fade-out");
+    document.addEventListener('touchstart', function () {
+    if (audio.paused) {
+        audio.play().catch(() => {});
+    }
+}, { once: false });
 
-    // 2. Set lagu & langsung puter
-    audio.src = lagu1;
+   opening.classList.add("fade-out");
+
+    audio.src = "lebaran.mp3";
     audio.loop = true;
-    
-    // Ini trik biar iPhone kaga rewel: pancing pake play() di dalem click event
-    audio.play().then(() => {
-        console.log("Mantap, lagu jalan!");
-    }).catch(e => {
-        console.log("Audio diblokir browser:", e);
-    });
+    audio.volume = 1;
 
-    // Buang element opening dari layar biar kaga ngalangin klik laen
+    audio.play().catch(() => {});
+
+    setTimeout(() => {
+        audio.play().catch(() => {});
+    }, 300);
+
     setTimeout(() => {
         opening.style.display = 'none';
     }, 1000);
 }
-
 
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
