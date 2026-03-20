@@ -11,6 +11,7 @@
         :root { 
             --green: #0a3d0a; 
             --gold: #ffd700; 
+            --pink: #ff4fa3;
             --gold-light: #fff3b0;
             --dark: #051405; 
             --card: rgba(255, 255, 255, 0.08); 
@@ -291,7 +292,7 @@
 <body>
 
 <div id="opening" onclick="startApp()">
-    <div onclick="startApp()" style="text-align:center;">
+    <div style="text-align:center;">
         <h1 style="color:var(--gold); font-size:42px;">EID AL-FITR</h1>
         <p style="font-size:9px">CLICK TO UNLOCK EXPERIENCE</p>
         <p class="watermark">Designed & Crafted by Hafizh Syahreza.</p>
@@ -380,7 +381,7 @@ AMBIL THR KAMU SEKARANG!&nbsp;•&nbsp;BUAT JAJAN YANG PEDES-PEDES 🥵🌶️�
 
 <audio id="mainAudio" preload="auto" playsinline></audio>
 
-<script>;
+<script>
 const pWrapper = document.getElementById('pWrapper');
 
 
@@ -393,26 +394,21 @@ const akhir = document.getElementById('akhir');
 
 function startApp() {
     const opening = document.getElementById('opening');
-    const audio = document.getElementById('mainAudio'); // Pastiin manggil ID yang bener
-    
-audio.src = "lebaran.mp3";
+    const audio = document.getElementById('mainAudio');
+
+    audio.src = "lebaran.mp3";
     audio.loop = true;
     audio.volume = 1;
 
-    // paksa play langsung saat klik pertama
-    let promise = audio.play();
+    audio.play().then(() => {
+        opening.classList.add("fade-out");
 
-    if (promise !== undefined) {
-        promise.then(() => {
-            opening.classList.add("fade-out");
-
-            setTimeout(() => {
-                opening.style.display = 'none';
-            }, 1000);
-        }).catch(() => {
-            console.log("audio blocked");
+        setTimeout(() => {
+            opening.style.display = "none";
+        }, 1000);
+    }).catch(err => {
+        console.log("Audio gagal:", err);
         });
-    }
 }
 
 function createSparks(x, y, isFirework = false) {
@@ -593,7 +589,3 @@ window.addEventListener('resize', autoRunningSpeed);
 </body>
 </html>
 
-</style>
-</head>
-
-<body>
