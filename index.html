@@ -59,6 +59,47 @@
     
           /* Photo Styles */
         .photo-wrapper { width: 180px; height: 180px; margin: 0 auto; position: relative; z-index: 110; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    object-fit: cover;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.dots {
+    position: absolute;
+    bottom: -18px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    transition: 0.3s;
+}
+
+.dot.active {
+    background: var(--gold);
+    transform: scale(1.3);
+}
         .photo { width: 100%; height: 100%; border-radius: 20px; object-fit: cover; box-shadow: 0 0 25px var(--pink); cursor: pointer; }
         .is-portrait { width: 240px !important; height: 320px !important; }
 
@@ -273,8 +314,13 @@
         </div>
         
         <div class="photo-wrapper" id="pWrapper">
-            <img src="foto.jpg" class="photo" id="mainPhoto" alt="Foto">
-        </div>
+            <div class="slider" id="slider">
+                <img src="foto1.jpg" class="photo slide active" alt="foto.jpg">
+                <img src="foto2.jpg" class="photo slide" alt="fotoya.jpg">
+    </div>
+
+    <div class="dots" id="dots"></div>
+</div>
         
         <div id="content-main">
             <div id="awal">
@@ -289,8 +335,13 @@
           
           <br>
           <div class="running">
-    <span> 🌙 MINAL AIDIN WAL FAIZIN AILI! • SELAMAT LEBARAN! • DITUNGGU OPOR AYAM BUATAN KAMU NYA YA! • 🌙 • •🌙 BUAH DUKU BUAH MANGGIS, DIMAKAN BARENG DI PINGGIR KALI.
-JANGAN CUMAN SENYUM-SENYUM MANIS,ADA THR NIH BUAT AILI.••🌙 MY BINI TUH HEHEHE🧸💌  (づ｡◕‿‿◕｡)づ•  AMBIL THR KAMU SEKARANG! • BUAT JAJAN YANG PEDES-PEDES🥵🌶️💥٩(ఠ益ఠ)۶ </span>
+    <span>
+🌙&nbsp;MINAL AIDIN WAL FAIZIN AILI!&nbsp;•&nbsp;SELAMAT LEBARAN!&nbsp;•&nbsp;DITUNGGU OPOR AYAM BUATAN KAMU NYA YA!&nbsp;•&nbsp;🌙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;🌙&nbsp;BUAH DUKU BUAH MANGGIS, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DIMAKAN BARENG DI PINGGIR KALI.&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JANGAN CUMAN SENYUM-SENYUM MANIS, &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADA THR NIH BUAT AILI.&nbsp;🌙&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(づ｡◕‿‿◕｡)づMY BINI TUH HEHEHE 🧸💌&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+AMBIL THR KAMU SEKARANG!&nbsp;•&nbsp;BUAT JAJAN YANG PEDES-PEDES 🥵🌶️💥٩(ఠ益ఠ)۶&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Semoga dihari kemenangan ini , hatimu juga bisa kumenangkan.. AHHAAYY <3 ❤️
+</span>
 </div>
 
            
@@ -333,7 +384,7 @@ JANGAN CUMAN SENYUM-SENYUM MANIS,ADA THR NIH BUAT AILI.••🌙 MY BINI TUH HE
 const opening = document.getElementById('opening');
 const audio = document.getElementById('mainAudio');
 const pWrapper = document.getElementById('pWrapper');
-const photo = document.getElementById('mainPhoto');
+
 const overlay = document.getElementById("dismiss-overlay");
 
 const yesBtn = document.getElementById('yesBtn');
@@ -384,11 +435,7 @@ function createSparks(x, y, isFirework = false) {
         }
     }
 
-    photo.onclick = (e) => {
-        const isZoomed = pWrapper.classList.toggle("is-portrait");
-        overlay.style.display = isZoomed ? "block" : "none";
-        createSparks(e.clientX, e.clientY);
-    };
+    
 
  overlay.onclick = () => {
         pWrapper.classList.remove("is-portrait");
@@ -467,6 +514,79 @@ function createSparks(x, y, isFirework = false) {
         runningText.style.animationDuration = '30s'; // layar besar
     }
 }
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+
+let currentSlide = 0;
+let startX = 0;
+
+// bikin dots + zoom
+slides.forEach((slide, index) => {
+    const dot = document.createElement('div');
+    dot.classList.add('dot');
+
+    if(index === 0) dot.classList.add('active');
+
+    dot.addEventListener('click', () => {
+        showSlide(index);
+    });
+
+    dotsContainer.appendChild(dot);
+
+    slide.addEventListener('click', (e) => {
+        const isZoomed = pWrapper.classList.toggle("is-portrait");
+        overlay.style.display = isZoomed ? "block" : "none";
+        createSparks(e.clientX, e.clientY);
+    });
+});
+
+const dots = document.querySelectorAll('.dot');
+
+function showSlide(index){
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    slides[index].classList.add('active');
+    dots[index].classList.add('active');
+
+    currentSlide = index;
+}
+
+function autoSlide(){
+    if (!pWrapper.classList.contains("is-portrait")) {
+        currentSlide++;
+        if(currentSlide >= slides.length){
+            currentSlide = 0;
+        }
+        showSlide(currentSlide);
+    }
+}
+
+setInterval(autoSlide, 2500);
+
+// swipe support
+const slider = document.getElementById('slider');
+
+slider.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+});
+
+slider.addEventListener('touchend', e => {
+    let endX = e.changedTouches[0].clientX;
+
+    if(startX - endX > 50){
+        currentSlide++;
+        if(currentSlide >= slides.length) currentSlide = 0;
+        showSlide(currentSlide);
+    }
+
+    if(endX - startX > 50){
+        currentSlide--;
+        if(currentSlide < 0) currentSlide = slides.length - 1;
+        showSlide(currentSlide);
+    }
+});
 
 autoRunningSpeed();
 window.addEventListener('resize', autoRunningSpeed);
