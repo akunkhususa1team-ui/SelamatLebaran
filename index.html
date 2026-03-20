@@ -33,7 +33,77 @@
         #opening { position: fixed; inset: 0; background: #000; display: grid; place-items: center; z-index: 9999; cursor: pointer; transition: 1s ease; }
         .fade-out { opacity: 0; pointer-events: none; transform: scale(1.2); }
 
-        .container { flex: 1; display: flex; align-items: center; justify-content: center; z-index: 1; padding: 5px; }
+
+    .container{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    z-index:1;
+    padding:1px;
+}
+
+/* Sidebar kiri */
+.side-menu{
+    width:90px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Tombol menu premium */
+.menu-btn{
+    width:85px;
+    height:78px;
+    border:none;
+    border-radius:24px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+
+    color:rgba(255,255,255,0.65);
+    font-weight:800;
+    font-size:11px;
+    cursor:pointer;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+    transition:0.35s ease;
+}
+
+/* icon */
+.menu-btn::before{
+    font-size:20px;
+}
+
+/* icon home */
+.menu-btn:first-child::before{
+    content:"🏠";
+}
+
+/* icon open house */
+.menu-btn:last-child::before{
+    content:"🏛️";
+}
+
+.menu-btn:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,0.14);
+}
+
+.menu-btn.active{
+    color:var(--gold);
+    box-shadow:0 0 18px rgba(255,215,0,0.25);
+    border:1px solid rgba(255,215,0,0.18);
+}
         
         .card { 
             width: 100%; max-width: 340px; background: var(--card); backdrop-filter: blur(25px); 
@@ -309,6 +379,42 @@
         </div>
     
   <div class="container">
+
+<div class="side-menu">
+    <button class="menu-btn active" onclick="goHome()">Home</button>
+    <button class="menu-btn" onclick="openHouse()">Open House</button>
+</div>
+
+    <div id="openhouse-area" style="display:none;">
+    <div class="card fade-page">
+        <h2 style="color: var(--gold); margin-bottom: 20px; font-size: 22px; font-weight:800;">
+            Invitation 💌
+        </h2>
+
+       <div style="display:flex; justify-content:center; margin-bottom:20px;">
+            <lottie-player
+                src="https://fonts.gstatic.com/s/e/notoemoji/latest/2763_fe0f/lottie.json"
+                background="transparent"
+                speed="1"
+                style="width:140px; height:140px;"
+                loop
+                autoplay>
+            </lottie-player>
+        </div>
+
+        <p class="quote-text" style="margin-top:25px; font-size:14px;">
+            "Jangan kejar dengan Nafsu, kejarlah dengan doa. Jangan ganggun dengan chat, ganggu Allah dalam tahajudmu. Karena jika dia takdirmu, Allah akan persatukan ✨" <br> <div style="margin-top:20px;
+                    font-size:12px;
+                    color:var(--gold-light);
+                    font-weight:bold;
+                    letter-spacing:1px;">
+            Ust. Adi Hidayat
+        </div>
+        </p>
+
+        <button onclick="goHome()" class="back-btn">⬅ Back Home</button>
+    </div>
+</div>
     <div class="card" id="cardArea">
         <div id="header-text">
             <h2 style="color: var(--gold); margin-bottom: 20px; font-size: 22px; font-weight: 800;">✨ Selamat Lebaran Aili ✨</h2>
@@ -344,6 +450,7 @@
 AMBIL THR KAMU SEKARANG!&nbsp;•&nbsp;BUAT JAJAN YANG PEDES-PEDES 🥵🌶️💥٩(ఠ益ఠ)۶&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Semoga dihari kemenangan ini , hatimu juga bisa kumenangkan.. AHHAAYY <3 ❤️
 </span>
 </div>
+         
 
            
     
@@ -471,6 +578,24 @@ function createSparks(x, y, isFirework = false) {
 
     document.getElementById('header-text').innerHTML =
         '<h2 style="color: var(--gold); margin-bottom: 20px; font-size: 22px; font-weight: 800;">Selamat Lebaran Aili ✨</h2>';
+}
+
+    function goHome(){
+    document.getElementById('openhouse-area').style.display = 'none';
+    document.getElementById('cardArea').style.display = 'block';
+
+    document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.menu-btn')[0].classList.add('active');
+
+    backHome();
+}
+
+function openHouse(){
+    document.getElementById('cardArea').style.display = 'none';
+    document.getElementById('openhouse-area').style.display = 'block';
+
+    document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.menu-btn')[1].classList.add('active');
 }
 
     // Background Elements
