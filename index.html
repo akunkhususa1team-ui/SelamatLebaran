@@ -478,7 +478,7 @@
     </div>
 </div>
   
-<audio id="mainAudio" preload="auto"></audio>
+<audio id="mainAudio" playsinline webkit-playsinline preload="auto"></audio>
 
 <div id="dismiss-overlay" style="position:fixed; inset:0; display:none; z-index:50;"></div>
 
@@ -633,23 +633,35 @@ AMBIL THR KAMU SEKARANG!&nbsp;•&nbsp;BUAT JAJAN YANG PEDES-PEDES 🥵🌶️�
 
 
 <script>
-const opening = document.getElementById("opening");
-const mainAudio = document.getElementById("mainAudio");
+
 const pWrapper = document.getElementById('pWrapper');
 const overlay = document.getElementById("dismiss-overlay");
 
 const yesBtn = document.getElementById('yesBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
+  
+const opening = document.getElementById("opening");
+const mainAudio = document.getElementById("mainAudio");
+mainAudio.src = "lebaran.mp3";
+mainAudio.loop = true;
+mainAudio.preload = "auto";
+mainAudio.load();
 
-const lagu1 = "lebaran.mp3";
+function startApp() {
+    mainAudio.play().then(() => {
+        console.log("Audio playing");
+    }).catch(err => {
+        console.log("Playback error:", err);
+    });
 
- opening.onclick = () => {
-        opening.classList.add("fade-out");
-        mainAudio.src = lagu1;
-        mainAudio.loop = true;
-        mainAudio.play().catch(e => console.log("Playback error:", e));
-    };
+    const opening = document.getElementById('opening');
+    opening.classList.add('fade-out');
+
+    setTimeout(() => {
+        opening.style.display = 'none';
+    }, 800);
+}
 
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
