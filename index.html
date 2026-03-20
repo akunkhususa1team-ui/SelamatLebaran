@@ -643,17 +643,21 @@ const akhir = document.getElementById('akhir');
   
 const opening = document.getElementById("opening");
 const mainAudio = document.getElementById("mainAudio");
+    
 mainAudio.src = "lebaran.mp3";
 mainAudio.loop = true;
 mainAudio.preload = "auto";
 mainAudio.load();
 
-function startApp() {
+document.addEventListener('touchstart', function() {
     mainAudio.play().then(() => {
-        console.log("Audio playing");
-    }).catch(err => {
-        console.log("Playback error:", err);
-    });
+        mainAudio.pause();
+        mainAudio.currentTime = 0;
+    }).catch(() => {});
+}, { once:true });
+
+function startApp() {
+    mainAudio.play().catch(err => console.log(err));
 
     const opening = document.getElementById('opening');
     opening.classList.add('fade-out');
@@ -662,6 +666,7 @@ function startApp() {
         opening.style.display = 'none';
     }, 800);
 }
+
 
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
