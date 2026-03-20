@@ -470,7 +470,7 @@
 </head>
 <body>
 
-<div id="opening" onclick="startApp()">
+<div id="opening" onclick="startApp(); playAudio();">
     <div style="text-align:center;">
         <h1 style="color:var(--gold); font-size:42px;">EID AL-FITR</h1>
         <p style="font-size:9px">CLICK TO UNLOCK EXPERIENCE</p>
@@ -478,7 +478,9 @@
     </div>
 </div>
   
-<audio id="mainAudio" playsinline webkit-playsinline preload="auto"></audio>
+<audio id="mainAudio" playsinline webkit-playsinline preload="auto">
+    <source src="lebaran.mp3" type="audio/mpeg">
+</audio>
 
 <div id="dismiss-overlay" style="position:fixed; inset:0; display:none; z-index:50;"></div>
 
@@ -643,30 +645,24 @@ const akhir = document.getElementById('akhir');
   
 const opening = document.getElementById("opening");
 const mainAudio = document.getElementById("mainAudio");
-    
-mainAudio.src = "lebaran.mp3";
-mainAudio.loop = true;
-mainAudio.preload = "auto";
-mainAudio.load();
 
-document.addEventListener('touchstart', function() {
+function playAudio() {
     mainAudio.play().then(() => {
-        mainAudio.pause();
-        mainAudio.currentTime = 0;
-    }).catch(() => {});
-}, { once:true });
+        console.log("audio running");
+    }).catch(err => {
+        console.log("audio blocked", err);
+    });
+}
 
 function startApp() {
-    mainAudio.play().catch(err => console.log(err));
-
     const opening = document.getElementById('opening');
+
     opening.classList.add('fade-out');
 
     setTimeout(() => {
         opening.style.display = 'none';
     }, 800);
 }
-
 
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
