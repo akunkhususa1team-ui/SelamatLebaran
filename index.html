@@ -394,29 +394,25 @@ const akhir = document.getElementById('akhir');
 function startApp() {
     const opening = document.getElementById('opening');
     const audio = document.getElementById('mainAudio'); // Pastiin manggil ID yang bener
-    const lagu1 = "lebaran.mp3";
-
-    document.addEventListener('touchstart', function () {
-    if (audio.paused) {
-        audio.play().catch(() => {});
-    }
-}, { once: false });
-
-   opening.classList.add("fade-out");
-
-    audio.src = "lebaran.mp3";
+    
+audio.src = "lebaran.mp3";
     audio.loop = true;
     audio.volume = 1;
 
-    audio.play().catch(() => {});
+    // paksa play langsung saat klik pertama
+    let promise = audio.play();
 
-    setTimeout(() => {
-        audio.play().catch(() => {});
-    }, 300);
+    if (promise !== undefined) {
+        promise.then(() => {
+            opening.classList.add("fade-out");
 
-    setTimeout(() => {
-        opening.style.display = 'none';
-    }, 1000);
+            setTimeout(() => {
+                opening.style.display = 'none';
+            }, 1000);
+        }).catch(() => {
+            console.log("audio blocked");
+        });
+    }
 }
 
 function createSparks(x, y, isFirework = false) {
