@@ -287,49 +287,6 @@
 
         .item { position: fixed; top: -50px; animation: fall linear infinite; pointer-events: none; opacity: 0.5; z-index: 1; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-        .bottom-nav {
-    position: fixed;
-    bottom: 25px; /* Memberi jarak dari bawah layar */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 85%;
-    max-width: 320px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-    border-radius: 25px;
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    z-index: 1000;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    transition: 0.5s ease;
-}
-
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: rgba(255, 255, 255, 0.5);
-    text-decoration: none;
-    font-size: 10px;
-    font-weight: 800;
-    transition: 0.3s;
-    cursor: pointer;
-}
-
-.nav-item span { font-size: 20px; margin-bottom: 2px; }
-
-.nav-item.active {
-    color: var(--gold);
-    transform: translateY(-5px);
-}
-
-/* Sembunyikan nav bar sebelum tombol 'Unlock' diklik */
-#opening:not(.fade-out) ~ .bottom-nav {
-    opacity: 0;
-    pointer-events: none;
-}
     </style>
 </head>
 <body>
@@ -420,31 +377,7 @@ AMBIL THR KAMU SEKARANG!&nbsp;•&nbsp;BUAT JAJAN YANG PEDES-PEDES 🥵🌶️�
     </div>
 </div>
 
-<nav class="bottom-nav">
-    <div class="nav-item active" onclick="navTo('home', this)">
-        <span>🏠</span>
-        <p>HOME</p>
-    </div>
-    <div class="nav-item" onclick="navTo('openhouse', this)">
-        <span>🕌</span>
-        <p>OPEN HOUSE</p>
-    </div>
-</nav>
 
-<div id="openhouse-area" style="display:none; width: 100%; max-width: 340px; margin: 0 auto; padding: 20px;">
-    <div class="card fade-page">
-        <h2 style="color: var(--gold); margin-bottom: 20px; font-size: 22px;">Invitation 💌</h2>
-        <div class="photo-wrapper">
-             <img src="foto.jpg" class="photo" alt="Home" style="box-shadow: 0 0 25px var(--gold);">
-        </div>
-        <p class="quote-text" style="margin-top:25px; font-size: 14px;">
-            "Nanti kalau sudah waktunya, kalau sudah halal, pintu rumahku selalu terbuka untukmu. Kita rayakan kemenangan bareng-bareng ya, Aili? ✨"
-        </p>
-        <div style="margin-top:20px; font-size: 12px; color: var(--gold-light); font-weight: bold; letter-spacing: 1px;">
-            📍 Lokasi: Future Home with You
-        </div>
-    </div>
-</div>
 
 <audio id="mainAudio" preload="auto"></audio>
 
@@ -640,34 +573,7 @@ slider.addEventListener('touchend', e => {
 
 autoRunningSpeed();
 window.addEventListener('resize', autoRunningSpeed);
-
-function navTo(page, element) {
-    // 1. Update tombol yang aktif
-    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-    element.classList.add('active');
-
-    const cardArea = document.getElementById('cardArea');
-    const openHouseArea = document.getElementById('openhouse-area');
-
-    // 2. Logika pindah halaman
-    if (page === 'openhouse') {
-        cardArea.style.display = 'none';
-        openHouseArea.style.display = 'block';
-        // Pastikan tiket juga tertutup kalau sedang terbuka
-        document.getElementById('akhir').style.display = 'none';
-    } else {
-        cardArea.style.display = 'block';
-        openHouseArea.style.display = 'none';
-        // Reset tampilan awal di menu home
-        document.getElementById('awal').style.display = 'block';
-        document.getElementById('pWrapper').style.display = 'block';
-    }
-
-    // Efek getar biar makin 'gemas'
-    if (navigator.vibrate) navigator.vibrate(25);
-}
 </script>
   
 </body>
 </html>
-
