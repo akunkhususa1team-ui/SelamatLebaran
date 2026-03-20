@@ -379,39 +379,26 @@ AMBIL THR KAMU SEKARANG!&nbsp;•&nbsp;BUAT JAJAN YANG PEDES-PEDES 🥵🌶️�
 
 
 
-<audio id="mainAudio" preload="auto" playsinline>
-    <source src="lebaran.mp3" type="audio/mpeg">
-</audio>
+<audio id="mainAudio" preload="auto"></audio>
 
 <script>
+const opening = document.getElementById("opening");
+const mainAudio = document.getElementById("mainAudio");
 const pWrapper = document.getElementById('pWrapper');
-
-
-
 const overlay = document.getElementById("dismiss-overlay");
 
 const yesBtn = document.getElementById('yesBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
 
-function startApp() {
-    const opening = document.getElementById('opening');
-    const audio = document.getElementById('mainAudio');
+const lagu1 = "lebaran.mp3";
 
-    audio.src = "lebaran.mp3";
-    audio.loop = true;
-    audio.volume = 1;
-
-    audio.play().then(() => {
+ opening.onclick = () => {
         opening.classList.add("fade-out");
-
-        setTimeout(() => {
-            opening.style.display = "none";
-        }, 1000);
-    }).catch(err => {
-        console.log("Audio gagal:", err);
-        });
-}
+        mainAudio.src = lagu1;
+        mainAudio.loop = true;
+        mainAudio.play().catch(e => console.log("Playback error:", e));
+    };
 
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
