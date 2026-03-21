@@ -495,7 +495,7 @@
     </div>
 </div>
   
-<audio id="mainAudio" loop playsinline preload="auto">
+<audio id="mainAudio" loop playsinline preload="auto" muted>
     <source src="lebaran.mp3" type="audio/mpeg">
 </audio>
     
@@ -767,34 +767,13 @@ const akhir = document.getElementById('akhir');
 const opening = document.getElementById("opening");
 
 function startApp() {
-    mainAudio.muted = false;
-    mainAudio.volume = 1;
-    mainAudio.loop = true;
+    opening.classList.add('fade-out');
 
-    const forcePlay = () => {
-        const p = mainAudio.play();
-
-        if (p !== undefined) {
-            p.then(() => {
-                console.log("✅ Audio ON");
-
-                document.removeEventListener('click', forcePlay);
-                document.removeEventListener('touchstart', forcePlay);
-            }).catch(() => {
-                // retry brutal biar pasti bunyi
-                setTimeout(() => {
-                    mainAudio.play().catch(()=>{});
-                }, 200);
-            });
-        }
-    };
-
-    // trigger utama (klik opening)
-    forcePlay();
-
-    // fallback super penting (HP & iPhone)
-    document.addEventListener('click', forcePlay);
-    document.addEventListener('touchstart', forcePlay);
+    setTimeout(() => {
+        opening.style.display = 'none';
+        showAudioPopup();
+    }, 800);
+}
 
     // animasi tetap jalan
     opening.classList.add('fade-out');
@@ -822,18 +801,15 @@ function enableAudio(){
     const popup = document.getElementById("audioPopup");
 
     mainAudio.muted = false;
-    mainAudio.volume = 1;
 
     mainAudio.play()
     .then(()=>{
-        console.log("✅ Audio Play dari popup");
+        console.log("✅ Audio berhasil play");
     })
-    .catch(()=>{
-        console.log("❌ masih gagal, retry...");
-        setTimeout(()=> mainAudio.play().catch(()=>{}),200);
+    .catch(err=>{
+        console.log("❌ Gagal play:", err);
     });
 
-    // animasi close
     popup.style.opacity = "0";
     popup.style.pointerEvents = "none";
 
