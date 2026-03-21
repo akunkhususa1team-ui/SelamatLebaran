@@ -495,7 +495,9 @@
     </div>
 </div>
   
-<audio id="mainAudio" preload="auto"></audio>
+<audio id="mainAudio" loop playsinline preload="auto">
+    <source src="lebaran.mp3" type="audio/mpeg">
+</audio>
     
 
 <div id="dismiss-overlay" style="position:fixed; inset:0; display:none; z-index:50;"></div>
@@ -713,25 +715,35 @@ AMBIL THR KAMU SEKARANG!&nbsp;•&nbsp;BUAT JAJAN YANG PEDES-PEDES 🥵🌶️�
 
 
 <script>
-
+// 1. Deklarasi Variabel (Sekali saja)
+const mainAudio = document.getElementById("mainAudio");
 const pWrapper = document.getElementById('pWrapper');
 const overlay = document.getElementById("dismiss-overlay");
-
 const yesBtn = document.getElementById('yesBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
-  
 const opening = document.getElementById("opening");
-const mainAudio = document.getElementById("mainAudio");
-const lagu1 = "lebaran.mp3";
 
-
-
+// 2. Fungsi Utama Start App (Audio Unlocker)
 function startApp() {
-    const opening = document.getElementById('opening');
+    // Fungsi internal untuk eksekusi play
+    const playMusic = () => {
+        mainAudio.play().then(() => {
+            console.log("Musik Berhasil!");
+            // Hapus listener cadangan jika musik sudah bunyi
+            document.removeEventListener('touchstart', playMusic);
+            document.removeEventListener('click', playMusic);
+        }).catch(e => console.log("Menunggu interaksi..."));
+    };
 
+    playMusic(); // Coba putar langsung
+
+    // Cadangan untuk iPhone/Safari
+    document.addEventListener('touchstart', playMusic, { once: true });
+    document.addEventListener('click', playMusic, { once: true });
+
+    // Animasi tutup cover
     opening.classList.add('fade-out');
-
     setTimeout(() => {
         opening.style.display = 'none';
     }, 800);
