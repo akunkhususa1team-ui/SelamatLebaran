@@ -539,9 +539,9 @@ transition:0.4s;
         ">
             Play Music 🎶
         </button>
-
     </div>
-</div>
+    </div>
+
 <div id="dismiss-overlay" style="position:fixed; inset:0; display:none; z-index:50;"></div>
 
   
@@ -769,14 +769,6 @@ const opening = document.getElementById("opening");
 function startApp() {
     opening.classList.add('fade-out');
 
-    setTimeout(() => {
-        opening.style.display = 'none';
-        showAudioPopup();
-    }, 800);
-}
-
-    // animasi tetap jalan
-    opening.classList.add('fade-out');
     setTimeout(() => {
         opening.style.display = 'none';
         showAudioPopup();
