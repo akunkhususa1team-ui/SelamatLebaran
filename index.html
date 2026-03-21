@@ -496,7 +496,7 @@
 </div>
   
 <audio id="mainAudio" loop playsinline preload="auto">
-    <source src="lebaran.mp3" type="audio/mpeg">
+    <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
 </audio>
     
 <div id="audioPopup" style="
@@ -760,6 +760,7 @@ AMBIL THR KAMU SEKARANG!&nbsp;•&nbsp;BUAT JAJAN YANG PEDES-PEDES 🥵🌶️�
 let audioUnlocked = false;
 // 1. Deklarasi Variabel (Sekali saja)
 const mainAudio = document.getElementById("mainAudio");
+mainAudio.setAttribute("playsinline", "");
 const pWrapper = document.getElementById('pWrapper');
 const overlay = document.getElementById("dismiss-overlay");
 const yesBtn = document.getElementById('yesBtn');
@@ -813,6 +814,7 @@ function showAudioPopup(){
     const box = document.getElementById("audioBox");
 
     popup.style.display = "flex";
+    popup.style.visibility = "visible"; // 🔥 INI KUNCI
 
     setTimeout(()=>{
         popup.style.opacity = "1";
@@ -1093,14 +1095,7 @@ slider.addEventListener('touchend', e => {
         showSlide(currentSlide);
     }
 });
-// 🔥 TARUH DI SINI (PALING BAWAH)
-    document.addEventListener("click", () => {
-        if(!audioUnlocked){
-            mainAudio.play().then(()=>{
-                audioUnlocked = true;
-            }).catch(()=>{});
-        }
-    }, { once: true });
+
 autoRunningSpeed();
 window.addEventListener('resize', autoRunningSpeed);
 </script>
