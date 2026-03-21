@@ -495,7 +495,7 @@
     </div>
 </div>
   
-<audio id="mainAudio" loop playsinline preload="auto" muted>
+<audio id="mainAudio" loop playsinline webkit-playsinline preload="auto" muted>
     <source src="lebaran.mp3" type="audio/mpeg">
 </audio>
     
@@ -774,7 +774,10 @@ function pauseMainAudio(){
 
 function resumeMainAudio(){
     if(mainAudio){
-        mainAudio.play().catch(()=>{});
+        mainAudio.muted = true;
+        mainAudio.play().then(()=>{
+            mainAudio.muted = false;
+        }).catch(()=>{});
     }
 }
 
@@ -825,13 +828,15 @@ function showAudioPopup(){
 function enableAudio(){
     const popup = document.getElementById("audioPopup");
 
-    mainAudio.muted = false;
+    // pastikan mulai dari muted dulu (biar lolos autoplay policy)
+    mainAudio.muted = true;
 
-    mainAudio.play()
-    .then(()=>{
-        console.log("✅ Audio berhasil play");
-    })
-    .catch(err=>{
+    mainAudio.play().then(()=>{
+        // setelah berhasil play → baru unmute
+        mainAudio.muted = false;
+
+        console.log("✅ Audio berhasil play di mobile");
+    }).catch(err=>{
         console.log("❌ Gagal play:", err);
     });
 
@@ -925,7 +930,10 @@ function createSparks(x, y, isFirework = false) {
 
 function goHome(){
     restoreAudio();      // 🔥 kembalikan volume normal
-    resumeMainAudio();   // 🔥 lanjutkan musik
+   mainAudio.muted = true;
+mainAudio.play().then(()=>{
+    mainAudio.muted = false;
+}).catch(()=>{});
 
     document.getElementById('openhouse-area').style.display = 'none';
     document.getElementById('ForYou-area').style.display = 'none';
