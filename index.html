@@ -974,6 +974,11 @@ function ForYou(){
 }
 
 function openHouse(){
+    restoreAudio();
+
+    if(audioUnlocked){
+        resumeMainAudio();
+    }
     document.getElementById('cardArea').style.display = 'none';
     document.getElementById('ForYou-area').style.display = 'none';
     if(document.getElementById('video-area')) document.getElementById('video-area').style.display = 'none';
