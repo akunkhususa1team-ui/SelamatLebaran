@@ -765,7 +765,40 @@ const yesBtn = document.getElementById('yesBtn');
 const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
 const opening = document.getElementById("opening");
+  
+function pauseMainAudio(){
+    if(mainAudio && !mainAudio.paused){
+        mainAudio.pause();
+    }
+}
 
+function resumeMainAudio(){
+    if(mainAudio){
+        mainAudio.play().catch(()=>{});
+    }
+}
+
+function duckAudio(){
+    if(mainAudio){
+        mainAudio.volume = 0.2;
+    }
+}
+
+function restoreAudio(){
+    if(mainAudio){
+        mainAudio.volume = 1;
+    }
+}
+  
+  mainAudio.addEventListener("play", () => {
+    const audios = document.querySelectorAll("audio, video");
+
+    audios.forEach(a => {
+        if(a !== mainAudio){
+            a.pause();
+        }
+    });
+});
 function startApp() {
     opening.classList.add('fade-out');
 
@@ -891,6 +924,9 @@ function createSparks(x, y, isFirework = false) {
 }
 
 function goHome(){
+    restoreAudio();      // 🔥 kembalikan volume normal
+    resumeMainAudio();   // 🔥 lanjutkan musik
+
     document.getElementById('openhouse-area').style.display = 'none';
     document.getElementById('ForYou-area').style.display = 'none';
     if(document.getElementById('video-area')) document.getElementById('video-area').style.display = 'none';
@@ -938,6 +974,9 @@ function openHouse(){
 }
 
 function videoDoc(){
+    pauseMainAudio();
+    duckAudio(); // 🔥 optional biar volume turun halus
+
     document.getElementById('cardArea').style.display = 'none';
     document.getElementById('ForYou-area').style.display = 'none';
     document.getElementById('openhouse-area').style.display = 'none';
@@ -945,6 +984,7 @@ function videoDoc(){
 
     document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.menu-btn')[3].classList.add('active');
+
     window.scrollTo(0, 0);
 }
     // Background Elements
