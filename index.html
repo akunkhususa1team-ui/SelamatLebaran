@@ -29,7 +29,7 @@
         /* --- Overlay Awal --- */
         
     
-        #opening { position: fixed; inset: 0; background: #000; display: grid; place-items: center; z-index: 9999; cursor: pointer; transition: 1s ease; }
+        #opening { position: fixed; inset: 0; background: #000; display: grid; place-items: center; z-index: 10000; cursor: pointer; transition: 1s ease; }
         .fade-out { opacity: 0; pointer-events: none; transform: scale(1.2); }
 
 
@@ -499,7 +499,49 @@
     <source src="lebaran.mp3" type="audio/mpeg">
 </audio>
     
+<div id="audioPopup" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+backdrop-filter:blur(10px);
+display:none; /* 🔥 INI YANG PENTING */
+align-items:center;
+justify-content:center;
+z-index:9999;
+opacity:0;
+pointer-events:none;
+transition:0.4s;
+">
 
+    <div id="audioBox" style="
+    background:rgba(20,20,20,0.85);
+    border:1px solid rgba(255,215,0,0.3);
+    padding:25px;
+    border-radius:20px;
+    text-align:center;
+    transform:scale(0.8);
+    transition:0.4s;
+    box-shadow:0 10px 40px rgba(0,0,0,0.6);
+    ">
+
+        <h3 style="color:#ffd700; margin-bottom:10px;">🎵 Aktifkan Musik</h3>
+        <p style="font-size:12px; opacity:0.7; margin-bottom:20px;">
+            Biar experience-nya makin dapet ✨
+        </p>
+
+        <button onclick="enableAudio()" style="
+        padding:12px 20px;
+        border:none;
+        border-radius:12px;
+        background:#ffd700;
+        font-weight:800;
+        cursor:pointer;
+        ">
+            Play Music 🎶
+        </button>
+
+    </div>
+</div>
 <div id="dismiss-overlay" style="position:fixed; inset:0; display:none; z-index:50;"></div>
 
   
@@ -724,31 +766,82 @@ const awal = document.getElementById('awal');
 const akhir = document.getElementById('akhir');
 const opening = document.getElementById("opening");
 
-// 2. Fungsi Utama Start App (Audio Unlocker)
 function startApp() {
-    // Fungsi internal untuk eksekusi play
-    const playMusic = () => {
-        mainAudio.play().then(() => {
-            console.log("Musik Berhasil!");
-            // Hapus listener cadangan jika musik sudah bunyi
-            document.removeEventListener('touchstart', playMusic);
-            document.removeEventListener('click', playMusic);
-        }).catch(e => console.log("Menunggu interaksi..."));
+    mainAudio.muted = false;
+    mainAudio.volume = 1;
+    mainAudio.loop = true;
+
+    const forcePlay = () => {
+        const p = mainAudio.play();
+
+        if (p !== undefined) {
+            p.then(() => {
+                console.log("✅ Audio ON");
+
+                document.removeEventListener('click', forcePlay);
+                document.removeEventListener('touchstart', forcePlay);
+            }).catch(() => {
+                // retry brutal biar pasti bunyi
+                setTimeout(() => {
+                    mainAudio.play().catch(()=>{});
+                }, 200);
+            });
+        }
     };
 
-    playMusic(); // Coba putar langsung
+    // trigger utama (klik opening)
+    forcePlay();
 
-    // Cadangan untuk iPhone/Safari
-    document.addEventListener('touchstart', playMusic, { once: true });
-    document.addEventListener('click', playMusic, { once: true });
+    // fallback super penting (HP & iPhone)
+    document.addEventListener('click', forcePlay);
+    document.addEventListener('touchstart', forcePlay);
 
-    // Animasi tutup cover
+    // animasi tetap jalan
     opening.classList.add('fade-out');
     setTimeout(() => {
         opening.style.display = 'none';
+        showAudioPopup();
     }, 800);
 }
+// munculin popup setelah opening hilang
+function showAudioPopup(){
+    const popup = document.getElementById("audioPopup");
+    const box = document.getElementById("audioBox");
 
+    popup.style.display = "flex";
+
+    setTimeout(()=>{
+        popup.style.opacity = "1";
+        popup.style.pointerEvents = "auto";
+        box.style.transform = "scale(1)";
+    },50);
+}
+
+// tombol play ditekan
+function enableAudio(){
+    const popup = document.getElementById("audioPopup");
+
+    mainAudio.muted = false;
+    mainAudio.volume = 1;
+
+    mainAudio.play()
+    .then(()=>{
+        console.log("✅ Audio Play dari popup");
+    })
+    .catch(()=>{
+        console.log("❌ masih gagal, retry...");
+        setTimeout(()=> mainAudio.play().catch(()=>{}),200);
+    });
+
+    // animasi close
+    popup.style.opacity = "0";
+    popup.style.pointerEvents = "none";
+
+    setTimeout(()=>{
+        popup.style.display = "none";
+    },400);
+}
+    
 function createSparks(x, y, isFirework = false) {
         const particles = isFirework ? ['💥', '✨', '💖', '⭐', '🌸'] : ['✨', '⭐', '💖', '🌸'];
         const count = isFirework ? 20 : 12;
@@ -806,12 +899,7 @@ function createSparks(x, y, isFirework = false) {
 
     if (navigator.vibrate) navigator.vibrate(30);
 }
-   opening.onclick = () => {
-        opening.classList.add("fade-out");
-        mainAudio.src = lagu1;
-        mainAudio.loop = true;
-        mainAudio.play().catch(e => console.log("Playback error:", e));
-    };
+
 
     function backHome() {
     const card = document.getElementById('cardArea');
