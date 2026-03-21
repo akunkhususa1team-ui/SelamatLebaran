@@ -1100,6 +1100,19 @@ slider.addEventListener('touchend', e => {
         showSlide(currentSlide);
     }
 });
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        mainAudio.pause();
+    }
+});
+
+window.addEventListener("blur", () => {
+    mainAudio.pause();
+});
+
+window.addEventListener("pagehide", () => {
+    mainAudio.pause();
+});
 
 autoRunningSpeed();
 window.addEventListener('resize', autoRunningSpeed);
