@@ -5,38 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <title>Lebaran VIP Aili 🌙</title>
-    <link href="https://fonts.googleapis.com/css2?family='Segoe UI':wght@700&family=Roboto, sans-serif:wght@400;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap" rel="stylesheet">
     <style>
         :root { 
             --green: #0a3d0a; 
             --gold: #ffd700; 
             --pink: #ff4fa3;
             --gold-light: #fff3b0;
-            --dark: #051405; function enableAudio(){
-    const popup = document.getElementById("audioPopup");
-
-    mainAudio.muted = true;
-
-    const playPromise = mainAudio.play();
-
-    if(playPromise !== undefined){
-        playPromise.then(()=>{
-            mainAudio.muted = false;
-            audioUnlocked = true; // ✅ tandai sudah unlock
-
-            console.log("✅ Audio unlocked & playing");
-        }).catch(err=>{
-            console.log("❌ Play gagal:", err);
-        });
-    }
-
-    popup.style.opacity = "0";
-    popup.style.pointerEvents = "none";
-
-    setTimeout(()=>{
-        popup.style.display = "none";
-    },400);
-}
+            --dark: #051405; 
             --card: rgba(255, 255, 255, 0.08); 
             --dana: #008ced;
         }
@@ -519,7 +495,7 @@
     </div>
 </div>
   
-<audio id="mainAudio" loop playsinline webkit-playsinline preload="auto" muted>
+<audio id="mainAudio" loop playsinline preload="auto">
     <source src="lebaran.mp3" type="audio/mpeg">
 </audio>
     
@@ -528,7 +504,7 @@ position:fixed;
 inset:0;
 background:rgba(0,0,0,0.7);
 backdrop-filter:blur(10px);
-display:none; /* 🔥 INI YANG PENTING */
+visibility:hidden; /* 🔥 INI YANG PENTING */
 align-items:center;
 justify-content:center;
 z-index:9999;
@@ -798,19 +774,10 @@ function pauseMainAudio(){
 }
 
 function resumeMainAudio(){
-    if(!audioUnlocked) return; // ❗ penting: hanya kalau sudah unlock
+    if(!audioUnlocked) return;
 
-    mainAudio.muted = true;
-
-    const playPromise = mainAudio.play();
-
-    if(playPromise !== undefined){
-        playPromise.then(()=>{
-            mainAudio.muted = false;
-        }).catch(()=>{});
-    }
+    mainAudio.play().catch(()=>{});
 }
-
 function duckAudio(){
     if(mainAudio){
         mainAudio.volume = 0.2;
@@ -858,27 +825,27 @@ function showAudioPopup(){
 function enableAudio(){
     const popup = document.getElementById("audioPopup");
 
-    mainAudio.muted = true;
+    // reset biar dianggap fresh interaction
+    mainAudio.currentTime = 0;
 
     const playPromise = mainAudio.play();
 
     if(playPromise !== undefined){
-        playPromise.then(()=>{
-            mainAudio.muted = false;
-            audioUnlocked = true; // ✅ tandai sudah unlock
-
-            console.log("✅ Audio unlocked & playing");
-        }).catch(err=>{
-            console.log("❌ Play gagal:", err);
+        playPromise.then(() => {
+            audioUnlocked = true;
+            console.log("✅ AUDIO PLAY BERHASIL");
+        }).catch(err => {
+            console.log("❌ MASIH KE BLOCK:", err);
         });
     }
 
     popup.style.opacity = "0";
-    popup.style.pointerEvents = "none";
+popup.style.pointerEvents = "none";
 
-    setTimeout(()=>{
-        popup.style.display = "none";
-    },400);
+setTimeout(()=>{
+    popup.style.visibility = "hidden";
+}, 300);
+    
 }
     
 function createSparks(x, y, isFirework = false) {
@@ -1126,7 +1093,14 @@ slider.addEventListener('touchend', e => {
         showSlide(currentSlide);
     }
 });
-
+// 🔥 TARUH DI SINI (PALING BAWAH)
+    document.addEventListener("click", () => {
+        if(!audioUnlocked){
+            mainAudio.play().then(()=>{
+                audioUnlocked = true;
+            }).catch(()=>{});
+        }
+    }, { once: true });
 autoRunningSpeed();
 window.addEventListener('resize', autoRunningSpeed);
 </script>
