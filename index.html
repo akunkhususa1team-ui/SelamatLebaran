@@ -487,7 +487,7 @@
 </head>
 <body>
 
-<div id="opening" onclick="startApp(); playAudio();">
+<div id="opening" onclick="startApp();">
     <div style="text-align:center;">
         <h1 style="color:var(--gold); font-size:42px;">EID AL-FITR</h1>
         <p style="font-size:9px">CLICK TO UNLOCK EXPERIENCE</p>
@@ -495,9 +495,8 @@
     </div>
 </div>
   
-<audio id="mainAudio" playsinline webkit-playsinline preload="auto">
-    <source src="lebaran.mp3" type="audio/mpeg">
-</audio>
+<audio id="mainAudio" preload="auto"></audio>
+    
 
 <div id="dismiss-overlay" style="position:fixed; inset:0; display:none; z-index:50;"></div>
 
@@ -647,7 +646,7 @@
             <div class="slider" id="slider">
                 <img src="foto.jpg" class="photo slide active" alt="foto.jpg">
                 <img src="Fotoya.jpg" class="photo slide" alt="Fotoya.jpg">
-              <img src="meow.jpg" class="photo slide" alt="meow.jpg">
+              <img src="Fotoya.jpg" class="photo slide" alt="meow.jpg">
     </div>
 
     <div class="dots" id="dots"></div>
@@ -721,14 +720,9 @@ const akhir = document.getElementById('akhir');
   
 const opening = document.getElementById("opening");
 const mainAudio = document.getElementById("mainAudio");
+const lagu1 = "lebaran.mp3";
 
-function playAudio() {
-    mainAudio.play().then(() => {
-        console.log("audio running");
-    }).catch(err => {
-        console.log("audio blocked", err);
-    });
-}
+
 
 function startApp() {
     const opening = document.getElementById('opening');
@@ -797,6 +791,12 @@ function createSparks(x, y, isFirework = false) {
 
     if (navigator.vibrate) navigator.vibrate(30);
 }
+   opening.onclick = () => {
+        opening.classList.add("fade-out");
+        mainAudio.src = lagu1;
+        mainAudio.loop = true;
+        mainAudio.play().catch(e => console.log("Playback error:", e));
+    };
 
     function backHome() {
     const card = document.getElementById('cardArea');
