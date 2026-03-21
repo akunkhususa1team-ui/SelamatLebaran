@@ -471,6 +471,18 @@
     color:rgba(255,255,255,0.65);
     text-align:center;
 }
+     .scrollable-card {
+    max-height: 80vh; /* Membatasi tinggi card 80% dari tinggi layar */
+    overflow-y: auto; /* Aktifkan scroll vertikal */
+    scrollbar-width: none; /* Hilangkan scrollbar di Firefox */
+    -ms-overflow-style: none; /* Hilangkan scrollbar di IE/Edge */
+}
+
+.scrollable-card {
+    /* ... kode sebelumnya ... */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* Biar licin di iPhone/Safari */
+}
     </style>
 </head>
 <body>
@@ -582,7 +594,7 @@
     </div>
 </div>
 <div id="ForYou-area" style="display:none;">
-    <div class="card fade-page">
+    <div class="card fade-page scrollable-card">
         <h2 style="color: var(--gold); margin-bottom: 20px; font-size: 22px; font-weight:800;">
             For You 💌
         </h2>
@@ -595,23 +607,23 @@
         </div>
       
 <div style="
-            position: relative; 
-            width: 100%; 
-            padding-bottom: 56.25%; /* Rasio 16:9 (Landscape) */
-            height: 0; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            background: #000;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        ">
-            <iframe 
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-                src="https://www.instagram.com/reel/DUryScOj-Qq/?igsh=eWZ5dzd2c2FlM3Vy" 
-                title="Instagram video player" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-            </iframe>
-        </div>
+    position: relative; 
+    width: 100%; 
+    padding-bottom: 100%; /* Kotak (Square), lebih hemat tempat daripada 150% */
+    height: 0; 
+    border-radius: 15px; 
+    overflow: hidden; 
+    background: #000;
+    margin: 10px 0;
+">
+    <iframe 
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+        src="https://www.instagram.com/reels/DUryScOj-Qq/embed" 
+        frameborder="0" 
+        scrolling="no" 
+        allowtransparency="true">
+    </iframe>
+</div>
         <p class="quote-text" style="margin-top:25px; font-size:14px;">
             "Jangan kejar dengan Nafsu, kejarlah dengan doa. Jangan ganggu dengan chat, ganggulah Allah dalam tahajudmu. Karena jika dia takdirmu, Allah akan persatukan ✨" <br> <div style="margin-top:20px;
                     font-size:12px;
@@ -635,7 +647,7 @@
             <div class="slider" id="slider">
                 <img src="foto.jpg" class="photo slide active" alt="foto.jpg">
                 <img src="Fotoya.jpg" class="photo slide" alt="Fotoya.jpg">
-              <img src="Fotoya.jpg" class="photo slide" alt="meow.jpg">
+              <img src="meow.jpg" class="photo slide" alt="meow.jpg">
     </div>
 
     <div class="dots" id="dots"></div>
@@ -823,11 +835,24 @@ function ForYou(){
     document.getElementById('cardArea').style.display = 'none';
     document.getElementById('openhouse-area').style.display = 'none';
     if(document.getElementById('video-area')) document.getElementById('video-area').style.display = 'none';
-    document.getElementById('ForYou-area').style.display = 'block';
+    
+    const forYouArea = document.getElementById('ForYou-area');
+    forYouArea.style.display = 'block';
+
+    // --- KUNCI PERBAIKAN DI SINI ---
+    // Cari elemen card di dalam For You Area dan paksa scroll ke paling atas
+    const scrollCard = forYouArea.querySelector('.scrollable-card');
+    if(scrollCard) scrollCard.scrollTop = 0; 
+    // -------------------------------
 
     document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.menu-btn')[1].classList.add('active');
-    window.scrollTo(0, 0);
+    
+    // Reset slider kutipan ke slide pertama juga biar rapi
+    if(typeof showFySlide === 'function') showFySlide(0);
+    if(typeof startFyAutoSlide === 'function') startFyAutoSlide();
+    
+    window.scrollTo(0, 0); // Scroll halaman utama (body) ke atas juga
 }
 
 function openHouse(){
